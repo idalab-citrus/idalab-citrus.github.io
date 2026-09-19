@@ -51,6 +51,28 @@
     </div>
   </section>
 
+  <section class="auth-page" id="registerView" aria-labelledby="registerTitle" hidden>
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-mark auth-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18" opacity=".5"/><circle cx="12" cy="12" r="3.5" fill="#fff" stroke="none"/></svg>
+        </div>
+        <h1 class="auth-title" id="registerTitle">建立帳號</h1>
+        <p class="auth-sub">註冊學生帳號，開始使用評分系統</p>
+      </div>
+      <form class="auth-form" id="registerForm">
+        <label class="field" id="inviteField" hidden><span class="field-label">邀請碼</span><input id="registerInvite" type="text" autocomplete="off" placeholder="輸入課程提供的邀請碼"></label>
+        <label class="field"><span class="field-label">帳號 <span class="hint">(至少 3 字元)</span></span><input id="registerUsername" type="text" autocomplete="username" required placeholder="設定您的帳號"></label>
+        <label class="field"><span class="field-label">Email <span class="hint">(選填)</span></span><input id="registerEmail" type="email" autocomplete="email" placeholder="your@email.com"></label>
+        <label class="field"><span class="field-label">密碼 <span class="hint" id="passwordHint">(至少 8 字元)</span></span><input id="registerPassword" type="password" autocomplete="new-password" required minlength="8" placeholder="設定密碼"></label>
+        <label class="field"><span class="field-label">確認密碼</span><input id="registerPassword2" type="password" autocomplete="new-password" required minlength="8" placeholder="再次輸入密碼"></label>
+        <button id="registerBtn" type="submit" class="auth-btn">註冊</button>
+      </form>
+      <p id="registerError" class="auth-error" role="alert" hidden></p>
+      <div class="auth-foot">已經有帳號了？<a href="#login" id="backToLogin">前往登入</a></div>
+    </div>
+  </section>
+
   <div id="appView" hidden>
     <header>
       <div class="header-inner">

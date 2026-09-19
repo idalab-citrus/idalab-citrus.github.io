@@ -48,6 +48,7 @@
 html{transition:none}
 body,header,.card,.table-card,.summary,.dropzone,.field input,.data-table thead th{transition:background-color .25s,border-color .25s,color .25s}
 *{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none !important}
 body{
   font-family:'IBM Plex Sans',-apple-system,sans-serif;
   color:var(--ink);background:var(--bg);line-height:1.5;
@@ -328,7 +329,8 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
 .auth-btn{width:100%;background:var(--teal);color:#fff;border:none;padding:13px;border-radius:11px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:4px}
 .auth-btn:hover{background:var(--tealDeep,#0C4A45);transform:translateY(-1px);box-shadow:var(--shadow-md)}
 .auth-btn:disabled{opacity:.65;cursor:wait;transform:none}
-.auth-error{margin-top:14px;padding:11px 13px;border:1px solid var(--red-faint);border-radius:11px;background:var(--red-faint);color:var(--red);font-size:13.5px}
+.auth-error{margin-top:14px;padding:11px 13px;border:1px solid var(--red-faint);border-radius:11px;background:var(--red-faint);color:var(--red);font-size:13.5px;white-space:pre-line}
+.auth-error.success{border-color:var(--green-faint);background:var(--green-faint);color:var(--green)}
 .auth-foot{text-align:center;margin-top:24px;font-size:14px;color:var(--ink-soft)}
 .auth-foot a{color:var(--teal);font-weight:600;text-decoration:none}
 .auth-foot a:hover{text-decoration:underline}

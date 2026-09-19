@@ -5,16 +5,24 @@
   const SESSION_TOKEN_KEY = "citrus_api_token";
   const REMEMBERED_USER_KEY = "citrus_remembered_username";
   const loginView = document.getElementById("loginView");
+  const registerView = document.getElementById("registerView");
   const appView = document.getElementById("appView");
   const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
   const loginError = document.getElementById("loginError");
+  const registerError = document.getElementById("registerError");
   let token = sessionStorage.getItem(SESSION_TOKEN_KEY);
 
   window.IS_STAFF = false;
 
-  function setError(message) {
-    loginError.textContent = message || "登入失敗";
-    loginError.hidden = !message;
+  function setPanelMessage(element, message, success) {
+    element.textContent = message || "";
+    element.classList.toggle("success", Boolean(success));
+    element.hidden = !message;
+  }
+
+  function setError(message, success) {
+    setPanelMessage(loginError, message, success);
   }
 
   function clearToken() {
@@ -44,7 +52,11 @@
   function showApp(user) {
     window.IS_STAFF = isStaff(user);
     loginView.hidden = true;
+    loginView.style.display = "none";
+    registerView.hidden = true;
+    registerView.style.display = "none";
     appView.hidden = false;
+    appView.style.removeProperty("display");
     document.title = "影像分析 · Citrus Surgical Scorer";
     document.body.classList.toggle("is-staff", window.IS_STAFF);
     document.getElementById("navUsername").textContent = user.username || "";
@@ -56,12 +68,46 @@
     setupOnboarding();
   }
 
-  function showLogin(message) {
+  function showLogin(message, success) {
     clearToken();
     appView.hidden = true;
+    appView.style.display = "none";
+    registerView.hidden = true;
+    registerView.style.display = "none";
     loginView.hidden = false;
+    loginView.style.removeProperty("display");
     document.title = "登入 · Citrus Surgical Scorer";
-    if (message) setError(message);
+    setError(message || "", success);
+  }
+
+  async function showRegister() {
+    setPanelMessage(registerError, "");
+    loginView.hidden = true;
+    loginView.style.display = "none";
+    appView.hidden = true;
+    appView.style.display = "none";
+    registerView.hidden = false;
+    registerView.style.removeProperty("display");
+    document.title = "註冊 · Citrus Surgical Scorer";
+    try {
+      const response = await request("/auth/registration");
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "目前無法讀取註冊設定");
+      if (!data.registration_open) {
+        setPanelMessage(registerError, "目前不開放自行註冊，請聯絡管理者建立帳號");
+        registerForm.hidden = true;
+        return;
+      }
+      registerForm.hidden = false;
+      document.getElementById("inviteField").hidden = !data.invite_required;
+      document.getElementById("registerInvite").required = Boolean(data.invite_required);
+      const minLength = Number(data.min_password_length) || 8;
+      document.getElementById("registerPassword").minLength = minLength;
+      document.getElementById("registerPassword2").minLength = minLength;
+      document.getElementById("passwordHint").textContent = "(至少 " + minLength + " 字元)";
+    } catch (error) {
+      setPanelMessage(registerError, error.message === "Failed to fetch" ? "目前無法連線至 5090 主機" : error.message);
+    }
   }
 
   async function request(path, options) {
@@ -110,6 +156,38 @@
     }
   });
 
+  registerForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    setPanelMessage(registerError, "");
+    const button = document.getElementById("registerBtn");
+    button.disabled = true;
+    button.textContent = "註冊中…";
+    try {
+      const response = await request("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          invite_code: document.getElementById("registerInvite").value,
+          username: document.getElementById("registerUsername").value.trim(),
+          email: document.getElementById("registerEmail").value.trim(),
+          password: document.getElementById("registerPassword").value,
+          password2: document.getElementById("registerPassword2").value
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error((data.errors || [data.error || "註冊失敗"]).join("\n"));
+      const username = document.getElementById("registerUsername").value.trim();
+      registerForm.reset();
+      document.getElementById("loginUsername").value = username;
+      showLogin(data.message || "註冊成功！請登入", true);
+    } catch (error) {
+      setPanelMessage(registerError, error.message === "Failed to fetch" ? "目前無法連線至 5090 主機" : error.message);
+    } finally {
+      button.disabled = false;
+      button.textContent = "註冊";
+    }
+  });
+
   document.getElementById("logoutBtn").addEventListener("click", async function () {
     try { await request("/auth/logout", { method: "POST" }); } catch (_) {}
     try { sessionStorage.removeItem("citrus_last_batch"); } catch (_) {}
@@ -122,8 +200,14 @@
     showToast(getLang() === "zh" ? "此頁面正在移轉；分析功能已可正常使用。" : "This page is being migrated; analysis is ready to use.", "info");
   }));
 
-  document.getElementById("registerLink").href = (cfg.ORIGINAL_SITE || "#") + "/register";
-  document.getElementById("forgotLink").href = (cfg.ORIGINAL_SITE || "#") + "/forgot-password";
+  document.getElementById("registerLink").href = "#register";
+  document.getElementById("registerLink").addEventListener("click", function (event) { event.preventDefault(); showRegister(); });
+  document.getElementById("backToLogin").addEventListener("click", function (event) { event.preventDefault(); showLogin(); });
+  document.getElementById("forgotLink").href = "#forgot-password";
+  document.getElementById("forgotLink").addEventListener("click", function (event) {
+    event.preventDefault();
+    setError("忘記密碼功能正在移轉，請先聯絡管理者協助重設密碼。");
+  });
 
   const rememberedUser = localStorage.getItem(REMEMBERED_USER_KEY);
   if (rememberedUser) {
