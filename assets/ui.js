@@ -1,0 +1,252 @@
+/* ==========================================================================
+   ui.js — 共用 UI 元件
+   ==========================================================================
+   1. animateCount(el, target, opts) — 數字 count-up 動畫 (Apple Health 風格)
+   2. openLightbox(views, startIdx)  — 影像檢視器 v2 (醫療影像 PACS 風格)
+      views: [{src, label, color, compareWith}]，或舊式單一 src 字串
+      · 標籤頁切換 4 視圖 · ← → 鍵盤切換 · Esc 關閉
+      · 「對比原圖」模式：拖曳分隔線比較偵測前後 (Viz.ai / PACS 慣例)
+   ========================================================================== */
+
+const REDUCED_MOTION = window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── HTML 跳脫：所有使用者可控字串 (檔名/帳號/Email) 注入 innerHTML 前必經，防儲存型 XSS ── */
+function esc(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* ── API fetch 包裝：統一處理 401 登入逾時 ──
+   後端對 /api/* 的未登入請求回 401 JSON；這裡顯示提示並自動導回登入頁。
+   呼叫端 catch 到 message === 'AUTH_401' 時直接安靜返回即可。 */
+/* ── CSRF：全域攔截 fetch，同源且會改動狀態 (非 GET/HEAD) 的請求自動帶 X-CSRFToken ──
+   token 來自 base.html 的 <meta name="csrf-token">，後端 Flask-WTF 驗證。
+   全域攔截的原因：頁面模板裡有多處 inline script 直接呼叫 fetch()，不經 apiFetch；
+   在這裡統一處理，現在與未來的呼叫點都涵蓋。只對同源加 header，不會把 token 洩漏給第三方。 */
+(function () {
+  if (window.__csrfFetchPatched) return;
+  window.__csrfFetchPatched = true;
+  const origFetch = window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    init = init || {};
+    const method = ((init.method) || (input instanceof Request ? input.method : 'GET') || 'GET').toUpperCase();
+    if (method !== 'GET' && method !== 'HEAD') {
+      let sameOrigin = true;
+      try {
+        const u = new URL(typeof input === 'string' ? input : input.url, location.href);
+        sameOrigin = (u.origin === location.origin);
+      } catch (e) { sameOrigin = false; }
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      if (sameOrigin && meta && meta.content) {
+        const h = new Headers(init.headers || (input instanceof Request ? input.headers : undefined) || {});
+        if (!h.has('X-CSRFToken')) h.set('X-CSRFToken', meta.content);
+        init.headers = h;
+      }
+    }
+    return origFetch(input, init);
+  };
+})();
+
+async function apiFetch(url, opts) {
+  const res = await fetch(url, opts);
+  if (res.status === 401) {
+    let msg = (typeof t === 'function') ? t('toast.session_expired') : '登入逾時，請重新登入';
+    try { const d = await res.json(); if (d && d.error && msg === 'toast.session_expired') msg = d.error; } catch (e) {}
+    if (typeof showToast === 'function') showToast(msg, 'error');
+    setTimeout(() => { location.href = '/login?next=' + encodeURIComponent(location.pathname); }, 1200);
+    throw new Error('AUTH_401');
+  }
+  return res;
+}
+
+/* ── 分數 → 顏色 / 等第 (全站共用；index 卡片、歷史表格、詳情彈窗都用) ── */
+function scoreColor(s){
+  if(s>=88) return 'var(--green)';
+  if(s>=63) return 'var(--teal)';
+  if(s>=38) return 'var(--amber)';
+  return 'var(--red)';
+}
+function gradeText(s){
+  if(s>=88) return (typeof t==='function')?t('grade.excellent'):'優異 Excellent';
+  if(s>=63) return (typeof t==='function')?t('grade.good'):'良好 Good';
+  if(s>=38) return (typeof t==='function')?t('grade.fair'):'待改進 Fair';
+  return (typeof t==='function')?t('grade.poor'):'不及格 Poor';
+}
+
+/* ── 數字 count-up ── */
+function animateCount(el, target, opts) {
+  if (!el || target == null || isNaN(target)) return;
+  opts = opts || {};
+  const decimals = opts.decimals != null ? opts.decimals : (Number.isInteger(+target) ? 0 : 1);
+  const duration = opts.duration || 900;
+  const suffix = opts.suffix || '';
+  // 減少動態偏好、或分頁在背景 (rAF 會被瀏覽器暫停) → 直接顯示最終值
+  if (REDUCED_MOTION || document.hidden) { el.textContent = (+target).toFixed(decimals) + suffix; return; }
+  const start = performance.now();
+  function frame(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+    el.textContent = (target * eased).toFixed(decimals) + suffix;
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  // 保險：動畫時間過後強制寫入最終值 (分頁中途被切到背景也能收尾)
+  setTimeout(() => { el.textContent = (+target).toFixed(decimals) + suffix; }, duration + 100);
+}
+
+/* ── 影像檢視器 v2 ── */
+const _lb = { views: [], idx: 0, compare: false, pos: 0.5 };
+
+function _lbT(key, fallback) {
+  return (typeof t === 'function') ? t(key) : fallback;
+}
+
+function _lbEnsure() {
+  let lb = document.getElementById('lightbox');
+  if (lb && lb.dataset.v2) return lb;
+  if (lb) lb.remove(); // 移除舊版殘留
+  lb = document.createElement('div');
+  lb.id = 'lightbox';
+  lb.className = 'lightbox';
+  lb.dataset.v2 = '1';
+  lb.innerHTML = `
+    <div class="lb-top">
+      <div class="lb-tabs"></div>
+      <button class="lb-close" aria-label="關閉">✕</button>
+    </div>
+    <div class="lb-stage">
+      <div class="lb-frame">
+        <img class="lb-base" alt="">
+        <div class="lb-overlay"><img alt=""></div>
+        <div class="lb-divider"><div class="lb-handle">⇄</div></div>
+        <div class="lb-badge left"></div>
+        <div class="lb-badge right"></div>
+      </div>
+    </div>
+    <div class="lb-bottom">
+      <button class="lb-compare-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+        <span class="lb-compare-label"></span>
+      </button>
+      <span class="lb-hint"></span>
+    </div>`;
+  document.body.appendChild(lb);
+
+  lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
+  lb.querySelector('.lb-stage').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeLightbox();
+  });
+  lb.querySelector('.lb-compare-btn').addEventListener('click', () => {
+    const v = _lb.views[_lb.idx];
+    if (!v || !v.compareWith) return;
+    _lb.compare = !_lb.compare;
+    _lb.pos = 0.5;
+    _lbRender(lb);
+  });
+  lb.querySelector('.lb-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.lb-tab');
+    if (!tab) return;
+    _lb.idx = +tab.dataset.idx;
+    if (!_lb.views[_lb.idx].compareWith) _lb.compare = false;
+    _lbRender(lb);
+  });
+  _lbDragInit(lb);
+  return lb;
+}
+
+function _lbDragInit(lb) {
+  const divider = lb.querySelector('.lb-divider');
+  const frame = lb.querySelector('.lb-frame');
+  let dragging = false;
+  divider.addEventListener('pointerdown', (e) => { dragging = true; e.preventDefault(); });
+  window.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const r = frame.getBoundingClientRect();
+    _lb.pos = Math.max(0.05, Math.min(0.95, (e.clientX - r.left) / r.width));
+    _lbSetPos(lb);
+  });
+  window.addEventListener('pointerup', () => { dragging = false; });
+}
+
+function _lbSetPos(lb) {
+  lb.querySelector('.lb-divider').style.left = (_lb.pos * 100) + '%';
+  lb.querySelector('.lb-overlay').style.clipPath = `inset(0 0 0 ${_lb.pos * 100}%)`;
+}
+
+function _lbRender(lb) {
+  const v = _lb.views[_lb.idx];
+  if (!v) return;
+  const comparing = _lb.compare && !!v.compareWith;
+
+  // 標籤頁
+  const tabs = lb.querySelector('.lb-tabs');
+  tabs.innerHTML = _lb.views.map((view, i) => `
+    <button class="lb-tab ${i === _lb.idx ? 'active' : ''}" data-idx="${i}">
+      ${view.color ? `<span class="dot" style="background:${view.color}"></span>` : ''}${view.label || ''}
+    </button>`).join('');
+
+  // 影像 (切換時淡入回饋)
+  const baseImg = lb.querySelector('.lb-base');
+  baseImg.src = comparing ? v.compareWith : v.src;
+  if (!REDUCED_MOTION) {
+    baseImg.classList.remove('fading');
+    void baseImg.offsetWidth;        // 強制重排以重啟動畫
+    baseImg.classList.add('fading');
+  }
+  const overlay = lb.querySelector('.lb-overlay');
+  overlay.style.display = comparing ? '' : 'none';
+  if (comparing) overlay.querySelector('img').src = v.src;
+  lb.classList.toggle('comparing', comparing);
+  if (comparing) _lbSetPos(lb);
+
+  // 對比按鈕 / 徽章 / 提示
+  const btn = lb.querySelector('.lb-compare-btn');
+  btn.disabled = !v.compareWith;
+  btn.classList.toggle('on', comparing);
+  lb.querySelector('.lb-compare-label').textContent = _lbT('lb.compare', '對比原圖');
+  lb.querySelector('.lb-badge.left').textContent = _lbT('lb.before', '偵測前');
+  lb.querySelector('.lb-badge.right').textContent = v.label || _lbT('lb.after', '偵測後');
+  lb.querySelector('.lb-hint').textContent = _lbT('lb.hint', '← → 切換視圖 · Esc 關閉');
+}
+
+function _lbKeys(e) {
+  const lb = document.getElementById('lightbox');
+  if (!lb || !lb.classList.contains('show')) return;
+  if (e.key === 'Escape') {
+    e.stopPropagation();
+    closeLightbox();
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    const n = _lb.views.length;
+    if (n < 2) return;
+    _lb.idx = (e.key === 'ArrowRight') ? (_lb.idx + 1) % n : (_lb.idx - 1 + n) % n;
+    if (!_lb.views[_lb.idx].compareWith) _lb.compare = false;
+    _lbRender(lb);
+  }
+}
+
+function openLightbox(views, startIdx) {
+  if (typeof views === 'string') views = [{ src: views, label: '' }];
+  _lb.views = views;
+  _lb.idx = startIdx || 0;
+  _lb.compare = false;
+  _lb.pos = 0.5;
+
+  const lb = _lbEnsure();
+  _lbRender(lb);
+  lb.classList.add('show');
+  requestAnimationFrame(() => lb.classList.add('visible'));
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('keydown', _lbKeys, true);
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.remove('visible');
+  setTimeout(() => lb.classList.remove('show'), 250);
+  document.body.style.overflow = '';
+  document.removeEventListener('keydown', _lbKeys, true);
+}

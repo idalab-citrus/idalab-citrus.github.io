@@ -1,0 +1,20 @@
+{
+  "name": "Citrus Surgical Scorer",
+  "short_name": "Citrus Scorer",
+  "description": "外科剝離影像 AI 評分系統",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FBFCFD",
+  "theme_color": "#0F766E",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "/static/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
