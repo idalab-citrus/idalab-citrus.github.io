@@ -50,6 +50,7 @@
   }
 
   function showApp(user) {
+    window.CITRUS_USER = user;
     window.IS_STAFF = isStaff(user);
     loginView.hidden = true;
     loginView.style.display = "none";
@@ -66,6 +67,7 @@
     document.querySelectorAll("[data-staff-only]").forEach((el) => { el.hidden = !window.IS_STAFF; });
     document.querySelectorAll("[data-student-only]").forEach((el) => { el.hidden = window.IS_STAFF; });
     setupOnboarding();
+    document.dispatchEvent(new CustomEvent("citrus:authenticated", { detail: user }));
   }
 
   function showLogin(message, success) {
@@ -129,6 +131,7 @@
     const apiPath = path === "/api/analyze" ? "/analyze" : path.replace(/^\/api\/v1/, "");
     return request(apiPath, options);
   };
+  window.citrusReturnToLogin = showLogin;
 
   loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -195,11 +198,6 @@
   });
 
   document.querySelectorAll("[data-auth-lang]").forEach((button) => button.addEventListener("click", function () { setLang(button.dataset.authLang); }));
-  document.querySelectorAll("[data-static-page]").forEach((link) => link.addEventListener("click", function (event) {
-    event.preventDefault();
-    showToast(getLang() === "zh" ? "此頁面正在移轉；分析功能已可正常使用。" : "This page is being migrated; analysis is ready to use.", "info");
-  }));
-
   document.getElementById("registerLink").href = "#register";
   document.getElementById("registerLink").addEventListener("click", function (event) { event.preventDefault(); showRegister(); });
   document.getElementById("backToLogin").addEventListener("click", function (event) { event.preventDefault(); showLogin(); });
