@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://spider-decorative-aaa-sounds.trycloudflare.com; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <title>Citrus Surgical Scorer</title>
+  <link rel="stylesheet" href="app.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="回到分析首頁">
+      <span class="brand-mark" aria-hidden="true">◎</span>
+      <span><strong>Citrus</strong><small>Surgical Scorer</small></span>
+    </a>
+    <div id="userArea" class="user-area" hidden>
+      <span id="username"></span>
+      <button id="logoutBtn" class="button ghost" type="button">登出</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="loginView" class="auth-shell" aria-labelledby="loginTitle">
+      <div class="auth-card">
+        <p class="eyebrow">NTOU · IDA LAB</p>
+        <h1 id="loginTitle">登入分析系統</h1>
+        <p class="muted">登入後，圖片會透過加密連線直接送至實驗室 5090 主機分析。</p>
+        <form id="loginForm">
+          <label>帳號<input id="loginUsername" name="username" autocomplete="username" required></label>
+          <label>密碼<input id="loginPassword" name="password" type="password" autocomplete="current-password" required></label>
+          <button id="loginBtn" class="button primary wide" type="submit">安全登入</button>
+        </form>
+        <p id="loginError" class="message error" role="alert" hidden></p>
+        <a id="originalSiteLink" class="text-link" href="#" target="_blank" rel="noopener noreferrer">首次登入或需要修改密碼？</a>
+      </div>
+    </section>
+
+    <section id="analyzeView" class="workspace" aria-labelledby="pageTitle" hidden>
+      <div class="hero">
+        <p class="eyebrow">AI-ASSISTED ASSESSMENT</p>
+        <h1 id="pageTitle">外科剝離 <span>影像評分</span></h1>
+        <p>上傳橘子皮剝離影像，5090 將偵測破皮與白膜殘留並產生客觀評分。</p>
+      </div>
+
+      <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="選擇或拖曳圖片上傳">
+        <div class="upload-icon" aria-hidden="true">↑</div>
+        <h2>拖曳影像至此，或點擊上傳</h2>
+        <p>JPG、PNG、WEBP、HEIC · 單檔上限 20 MB · 每次最多 20 張</p>
+        <button class="button primary" type="button">選擇影像</button>
+        <input id="fileInput" type="file" accept="image/*,.heic,.heif" multiple hidden>
+      </div>
+
+      <div id="queue" class="queue" hidden></div>
+      <section id="progress" class="progress-card" aria-live="polite" hidden>
+        <div><strong id="progressText">正在上傳與分析…</strong><span id="progressCount"></span></div>
+        <div class="progress-track"><i id="progressBar"></i></div>
+        <p>首次分析需要載入 AI 模型，可能稍候數秒，請勿關閉頁面。</p>
+      </section>
+      <p id="globalError" class="message error" role="alert" hidden></p>
+
+      <section id="summary" class="summary" hidden>
+        <div><strong id="summaryAvg">—</strong><span>平均 AI 評分</span></div>
+        <div><strong id="summaryBest">—</strong><span>最高分</span></div>
+        <div><strong id="summaryCount">—</strong><span>完成張數</span></div>
+      </section>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <footer>Intelligent Design and Application Laboratory · National Taiwan Ocean University</footer>
+</body>
+</html>
