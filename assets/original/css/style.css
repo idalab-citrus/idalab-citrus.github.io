@@ -46,7 +46,7 @@
 [data-theme="dark"] .dz-btn{background:var(--teal);color:#06251f}
 [data-theme="dark"] .auth-btn{background:var(--teal);color:#06251f}
 html{transition:none;max-width:100%;overflow-x:clip}
-body{max-width:100%;overflow-x:clip}
+body{max-width:100%;overflow-x:clip;display:flex;flex-direction:column;min-height:100vh}
 body,header,.card,.table-card,.summary,.dropzone,.field input,.data-table thead th{transition:background-color .25s,border-color .25s,color .25s}
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -95,7 +95,7 @@ header{
 .stat-pill .l{font-size:10.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
 
 /* ── Layout ── */
-main{max-width:1240px;margin:0 auto;padding:40px 32px 80px}
+main{width:100%;max-width:1240px;margin:0 auto;padding:40px 32px 80px;flex:1 0 auto}
 .hero{margin-bottom:32px}
 .hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1.15}
 .hero h1 .accent{color:var(--teal);font-style:italic}
@@ -320,7 +320,7 @@ body:not(.is-staff) .staff-only{display:none !important}
 .flash-error{background:var(--red-faint);color:var(--red);border:1px solid #FECACA}
 
 /* ── 認證頁 ── */
-.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;
+.auth-page{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;flex:1 0 auto;
   background-image:radial-gradient(ellipse 70% 60% at 20% 0%,var(--teal-faint),transparent 55%),radial-gradient(ellipse 60% 50% at 90% 100%,var(--amber-faint),transparent 50%);}
 .auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg);overflow:hidden}
 .auth-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright) 58%,#F59E0B)}
@@ -495,9 +495,32 @@ body:not(.is-staff) .staff-only{display:none !important}
 .auth-lang{text-align:center;margin-top:16px;font-size:12.5px;color:var(--ink-faint)}
 .auth-lang button{background:none;border:none;color:var(--teal);font-family:inherit;font-size:12.5px;cursor:pointer;font-weight:600}
 .auth-lang button:hover{text-decoration:underline}
-.auth-affiliation{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--ink-faint);letter-spacing:.02em}
-.auth-affiliation a{color:var(--teal);font-weight:700;text-decoration:none}
-.auth-affiliation a:hover{text-decoration:underline}
+.auth-affiliation{display:flex;align-items:center;justify-content:center;margin-top:15px;padding-top:15px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em}
+.auth-affiliation a{color:var(--ink-soft);font-weight:600;text-decoration:none}
+.auth-lab-link{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.28);transition:transform .2s,border-color .2s,color .2s,background .2s}
+.auth-lab-link:hover{color:var(--teal);border-color:rgba(20,184,166,.5);background:var(--teal-faint);transform:translateY(-1px)}
+.auth-lab-link svg{width:13px;height:13px}
+.auth-lab-status{width:6px;height:6px;border-radius:50%;background:var(--teal-bright);box-shadow:0 0 0 4px rgba(20,184,166,.10)}
+
+/* ── 貼底品牌頁尾 ── */
+.site-footer{width:100%;margin-top:auto;border-top:1px solid var(--glass-edge);background:linear-gradient(180deg,var(--glass-chrome),rgba(15,118,110,.035));backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%)}
+.site-footer-inner{width:100%;max-width:1240px;margin:0 auto;padding:20px 32px;display:grid;grid-template-columns:minmax(250px,1fr) auto minmax(238px,auto);align-items:center;gap:28px}
+.footer-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.footer-lab-emblem{width:46px;height:46px;flex:0 0 46px;border-radius:13px;background:#fff;border:1px solid rgba(15,23,42,.08);padding:3px;box-shadow:0 8px 20px rgba(15,23,42,.10);overflow:hidden}
+.footer-lab-emblem img{display:block;width:100%;height:100%;object-fit:contain}
+.footer-brand-title{font-family:'Fraunces',serif;font-size:16px;font-weight:650;color:var(--ink);line-height:1.2}
+.footer-brand-sub{margin-top:2px;font-size:10.5px;color:var(--ink-faint);letter-spacing:.035em;white-space:nowrap}
+.footer-context{font-size:11.5px;color:var(--ink-faint);text-align:center;white-space:nowrap}
+.footer-lab-link{justify-self:end;display:flex;align-items:center;gap:10px;min-width:225px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.32);color:var(--ink);text-decoration:none;box-shadow:inset 0 1px 0 var(--glass-edge);transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
+.footer-lab-link:hover{transform:translateY(-2px);border-color:rgba(20,184,166,.5);background:var(--teal-faint);box-shadow:0 10px 24px rgba(15,118,110,.10),inset 0 1px 0 var(--glass-edge)}
+.footer-link-icon{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:10px;background:var(--teal-faint);color:var(--teal)}
+.footer-link-icon svg{width:17px;height:17px}
+.footer-link-copy{display:flex;min-width:0;flex:1;flex-direction:column;line-height:1.15}
+.footer-link-copy strong{font-size:12px;font-weight:700}
+.footer-link-copy small{margin-top:4px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:9.5px}
+.footer-link-arrow{width:16px;height:16px;color:var(--teal);transition:transform .2s}
+.footer-lab-link:hover .footer-link-arrow{transform:translate(2px,-2px)}
+[data-theme="dark"] .footer-lab-link,[data-theme="dark"] .auth-lab-link{background:rgba(255,255,255,.025)}
 
 /* ==========================================================================
    Toast 通知 (右上角浮動)
@@ -587,6 +610,8 @@ body:not(.is-staff) .staff-only{display:none !important}
 /* 平板 (≤1024px) */
 @media(max-width:1024px){
   main{padding-left:20px;padding-right:20px}
+  .site-footer-inner{padding-left:20px;padding-right:20px;grid-template-columns:1fr auto}
+  .footer-context{display:none}
   .summary-grid[style*="repeat(5"]{grid-template-columns:repeat(3,1fr) !important}
   .header-inner{padding-left:18px;padding-right:18px}
   .sm-cell .v{font-size:22px}
@@ -617,6 +642,10 @@ body:not(.is-staff) .staff-only{display:none !important}
      設定頁的「外觀」才是這兩項的正式入口，有標籤也不會被截斷 */
   .nav-prefs{display:none}
   main{padding:20px 14px}
+  .site-footer-inner{padding:18px 16px;grid-template-columns:1fr;gap:14px}
+  .footer-brand{justify-content:center;text-align:left}
+  .footer-brand-sub{white-space:normal}
+  .footer-lab-link{justify-self:stretch;min-width:0}
   .hero h1{font-size:26px}
   .hero p{font-size:13.5px}
   .summary-grid,.summary-grid[style*="repeat(5"],.summary-grid[style*="repeat(4"]{grid-template-columns:repeat(2,1fr) !important}
@@ -645,6 +674,22 @@ body:not(.is-staff) .staff-only{display:none !important}
   .summary-grid{grid-template-columns:1fr 1fr !important}
   .hero h1{font-size:22px}
   .auth-card{padding:28px 20px}
+}
+
+/* 矮螢幕仍完整顯示登入卡與實驗室連結，不讓頁尾資訊掉到折線下方 */
+@media(max-height:800px) and (min-width:501px){
+  .auth-page{padding:22px 20px;align-items:flex-start}
+  .auth-card{padding:26px 34px}
+  .auth-lab-logo{width:108px;height:108px;margin-bottom:12px;border-radius:18px}
+  .auth-brand{margin-bottom:16px}
+  .auth-title{font-size:25px}
+  .auth-sub{margin-top:3px}
+  .auth-form{gap:11px}
+  .field{gap:5px}
+  .field input{padding-top:10px;padding-bottom:10px}
+  .auth-foot{margin-top:16px}
+  .auth-lang{margin-top:11px}
+  .auth-affiliation{margin-top:10px;padding-top:10px}
 }
 
 /* ==========================================================================
@@ -731,13 +776,34 @@ main{animation:pageIn .45s ease both}
 .score-meta .grade{animation:gradeIn .5s cubic-bezier(.34,1.56,.64,1) .35s backwards}
 @keyframes gradeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 
-/* ── 認證頁環境光暈 (靜態，零 GPU 負擔) ── */
-.auth-page{position:relative;overflow:hidden}
-.auth-page::before,.auth-page::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;z-index:0;pointer-events:none}
-.auth-page::before{width:420px;height:420px;background:var(--teal-faint);top:-120px;left:-80px}
-.auth-page::after{width:360px;height:360px;background:var(--amber-faint);bottom:-100px;right:-60px}
-.auth-card{position:relative;z-index:1;animation:authIn .55s cubic-bezier(.2,.7,.3,1)}
-@keyframes authIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* ── 認證頁：流動環境光、精密格線與品牌揭幕 ── */
+.auth-page{position:relative;overflow:hidden;isolation:isolate;background-color:var(--bg)}
+.auth-page::before,.auth-page::after{content:"";position:absolute;border-radius:50%;filter:blur(78px);opacity:.48;z-index:-2;pointer-events:none;will-change:transform}
+.auth-page::before{width:min(48vw,620px);height:min(48vw,620px);background:rgba(20,184,166,.28);top:-20%;left:-10%;animation:authGlowTeal 17s ease-in-out infinite alternate}
+.auth-page::after{width:min(42vw,540px);height:min(42vw,540px);background:rgba(245,158,11,.20);bottom:-22%;right:-8%;animation:authGlowAmber 20s ease-in-out infinite alternate}
+.auth-grid{position:absolute;inset:0;z-index:-3;pointer-events:none;opacity:.24;background-image:linear-gradient(rgba(94,234,212,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.055) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at center,#000 0%,transparent 72%);-webkit-mask-image:radial-gradient(ellipse at center,#000 0%,transparent 72%);animation:authGridDrift 26s linear infinite}
+.auth-light{position:absolute;z-index:-1;pointer-events:none;border-radius:999px;filter:blur(44px);opacity:.22;will-change:transform}
+.auth-light-teal{width:240px;height:90px;background:var(--teal-bright);left:19%;top:63%;animation:authLightTeal 13s ease-in-out infinite alternate}
+.auth-light-amber{width:180px;height:70px;background:#F59E0B;right:20%;top:23%;animation:authLightAmber 15s ease-in-out infinite alternate}
+.auth-card{position:relative;z-index:1;animation:authIn .75s cubic-bezier(.16,1,.3,1) .28s both}
+@keyframes authIn{from{opacity:0;transform:translateY(24px) scale(.975);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes authGlowTeal{0%{transform:translate3d(-4%,-2%,0) scale(.94)}55%{transform:translate3d(30%,18%,0) scale(1.08)}100%{transform:translate3d(10%,42%,0) scale(.98)}}
+@keyframes authGlowAmber{0%{transform:translate3d(5%,4%,0) scale(.96)}55%{transform:translate3d(-34%,-22%,0) scale(1.1)}100%{transform:translate3d(-12%,-40%,0) scale(1)}}
+@keyframes authLightTeal{from{transform:translate3d(-20px,30px,0) rotate(-8deg)}to{transform:translate3d(110px,-70px,0) rotate(12deg)}}
+@keyframes authLightAmber{from{transform:translate3d(30px,-20px,0) rotate(10deg)}to{transform:translate3d(-120px,85px,0) rotate(-12deg)}}
+@keyframes authGridDrift{to{background-position:64px 64px}}
+.auth-loader{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#08111f;opacity:1;visibility:visible;transition:opacity .7s cubic-bezier(.4,0,.2,1),visibility .7s}
+.auth-loader::before{content:"";position:absolute;width:min(70vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.16),transparent 66%);animation:loaderAura 2.4s ease-in-out infinite}
+.auth-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.auth-loader-brand{position:relative;display:flex;flex-direction:column;align-items:center;gap:13px;animation:loaderBrandIn .55s cubic-bezier(.16,1,.3,1) both}
+.auth-loader-logo{width:90px;height:90px;padding:5px;border-radius:24px;background:#fff;border:1px solid rgba(255,255,255,.24);box-shadow:0 20px 55px rgba(0,0,0,.35),0 0 40px rgba(45,212,191,.08);overflow:hidden}
+.auth-loader-logo img{display:block;width:100%;height:100%;object-fit:contain}
+.auth-loader-name{font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.26em;color:#C8FFF7;text-indent:.26em}
+.auth-loader-track{width:116px;height:2px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.10)}
+.auth-loader-track span{display:block;width:45%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--teal-bright),#F59E0B);animation:loaderTrack 1.05s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes loaderBrandIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes loaderAura{50%{transform:scale(1.08);opacity:.72}}
+@keyframes loaderTrack{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
 
 /* ==========================================================================
    寧靜玻璃 (calm liquid glass)

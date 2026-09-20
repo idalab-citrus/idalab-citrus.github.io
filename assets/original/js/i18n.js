@@ -13,6 +13,8 @@ const I18N = {
     // 導覽
     'nav.analyze': '分析', 'nav.history': '我的紀錄', 'nav.admin': '管理後台',
     'nav.settings': '設定', 'nav.logout': '登出',
+    'footer.context': '國立臺灣海洋大學 · AI 外科剝離影像評分系統',
+    'footer.visit_lab': '探索實驗室網站',
     'role.admin': '管理者', 'role.student': '學生',
     // 登入
     'login.welcome': '歡迎回來', 'login.subtitle': '登入以使用 AI 剝離影像評分系統',
@@ -101,6 +103,8 @@ const I18N = {
   en: {
     'nav.analyze': 'Analyze', 'nav.history': 'My Records', 'nav.admin': 'Admin',
     'nav.settings': 'Settings', 'nav.logout': 'Log out',
+    'footer.context': 'National Taiwan Ocean University · AI Surgical Dissection Scorer',
+    'footer.visit_lab': 'Explore the lab website',
     'role.admin': 'Admin', 'role.student': 'Student',
     'login.welcome': 'Welcome Back', 'login.subtitle': 'Sign in to use the AI dissection scorer',
     'login.account': 'Username', 'login.password': 'Password', 'login.remember': 'Remember me',
