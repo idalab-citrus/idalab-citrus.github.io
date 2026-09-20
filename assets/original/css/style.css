@@ -402,6 +402,16 @@ body:not(.is-staff) .staff-only{display:none !important}
 .spinner{width:22px;height:22px;border:2.5px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* 共用資料載入層：請求很快時由 JS 延遲顯示，避免短暫閃爍 */
+.data-loading-host{position:relative}
+.data-loading-overlay{position:absolute;inset:0;z-index:12;display:flex;align-items:center;justify-content:center;gap:11px;min-height:76px;background:color-mix(in srgb,var(--card) 84%,transparent);color:var(--ink-soft);font-size:13px;font-weight:600;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
+.summary.data-loading-host .data-loading-overlay{border-radius:18px}
+.table-card.data-loading-host .data-loading-overlay{border-radius:18px}
+.data-loading-host.is-data-loading .data-loading-overlay{opacity:1;visibility:visible}
+.data-loading-spinner{width:20px;height:20px;border:2px solid color-mix(in srgb,var(--teal) 22%,transparent);border-top-color:var(--teal);border-radius:50%;animation:spin .72s linear infinite}
+.button-is-loading{display:inline-flex !important;align-items:center;justify-content:center;gap:8px;cursor:wait !important;opacity:.78}
+.button-is-loading::before{content:"";flex:0 0 auto;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .72s linear infinite}
+
 /* 返回連結 */
 .back-link{display:inline-block;font-size:13.5px;color:var(--ink-faint);text-decoration:none;transition:color .2s}
 .back-link:hover{color:var(--teal)}

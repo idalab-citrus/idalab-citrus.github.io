@@ -62,6 +62,111 @@ async function apiFetch(url, opts) {
   return res;
 }
 
+/* ── 非阻塞載入回饋 ──
+   快速請求不顯示，避免畫面閃爍；超過 140ms 才浮現，顯示後至少停留 280ms。
+   同一區塊若有多個並行請求，會等全部結束才收起。 */
+const _dataLoadingStates = new WeakMap();
+const _buttonLoadingStates = new WeakMap();
+
+function _loadingTarget(target) {
+  return typeof target === 'string' ? document.querySelector(target) : target;
+}
+
+function beginDataLoading(target, opts) {
+  const el = _loadingTarget(target);
+  if (!el) return null;
+  opts = opts || {};
+
+  let state = _dataLoadingStates.get(el);
+  if (!state) {
+    let overlay = el.querySelector(':scope > .data-loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'data-loading-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.innerHTML = '<span class="data-loading-spinner"></span><span class="data-loading-label"></span>';
+      el.appendChild(overlay);
+    }
+    state = { count: 0, timer: null, hideTimer: null, shownAt: 0, overlay };
+    _dataLoadingStates.set(el, state);
+  }
+
+  state.count += 1;
+  if (state.hideTimer) { clearTimeout(state.hideTimer); state.hideTimer = null; }
+  const labelKey = opts.labelKey || 'loading.data';
+  state.overlay.querySelector('.data-loading-label').textContent = opts.label ||
+    ((typeof t === 'function') ? t(labelKey) : '載入中…');
+  el.classList.add('data-loading-host');
+  el.setAttribute('aria-busy', 'true');
+
+  if (!el.classList.contains('is-data-loading') && !state.timer) {
+    state.timer = setTimeout(() => {
+      state.timer = null;
+      if (state.count < 1) return;
+      state.shownAt = performance.now();
+      state.overlay.setAttribute('aria-hidden', 'false');
+      el.classList.add('is-data-loading');
+    }, opts.delay == null ? 140 : opts.delay);
+  }
+  return { el, state, done: false, minVisible: opts.minVisible == null ? 280 : opts.minVisible };
+}
+
+function endDataLoading(token) {
+  if (!token || token.done) return;
+  token.done = true;
+  const { el, state } = token;
+  state.count = Math.max(0, state.count - 1);
+  if (state.count > 0) return;
+  if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+
+  const hide = () => {
+    if (state.count > 0) return;
+    el.classList.remove('is-data-loading');
+    el.removeAttribute('aria-busy');
+    state.overlay.setAttribute('aria-hidden', 'true');
+    state.hideTimer = null;
+  };
+  const remaining = state.shownAt ? Math.max(0, token.minVisible - (performance.now() - state.shownAt)) : 0;
+  state.hideTimer = setTimeout(hide, remaining);
+}
+
+function beginButtonLoading(target) {
+  const button = _loadingTarget(target);
+  if (!button) return null;
+  let state = _buttonLoadingStates.get(button);
+  if (!state) {
+    state = { count: 0, wasDisabled: button.disabled };
+    _buttonLoadingStates.set(button, state);
+  }
+  state.count += 1;
+  button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
+  button.classList.add('button-is-loading');
+  return { button, state, done: false };
+}
+
+function endButtonLoading(token) {
+  if (!token || token.done) return;
+  token.done = true;
+  token.state.count = Math.max(0, token.state.count - 1);
+  if (token.state.count > 0) return;
+  token.button.disabled = token.state.wasDisabled;
+  token.button.removeAttribute('aria-busy');
+  token.button.classList.remove('button-is-loading');
+  _buttonLoadingStates.delete(token.button);
+}
+
+// 傳統表單（登入、註冊、忘記密碼、登出）送出後也提供一致的等待回饋。
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', (event) => {
+      if (event.defaultPrevented) return;
+      const button = event.submitter || form.querySelector('button[type="submit"],input[type="submit"]');
+      if (button) requestAnimationFrame(() => beginButtonLoading(button));
+    });
+  });
+});
+
 /* ── 分數 → 顏色 / 等第 (全站共用；index 卡片、歷史表格、詳情彈窗都用) ── */
 function scoreColor(s){
   if(s>=88) return 'var(--green)';

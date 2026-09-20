@@ -200,6 +200,8 @@ Object.assign(I18N.zh, {
   'chart.metric_ai': 'AI 評分', 'chart.metric_damage': '破皮比例', 'chart.metric_white': '白膜比例',
   'chart.zoom_hint': '滾輪縮放 · 拖曳平移 · 雙擊還原', 'chart.reset_zoom': '還原縮放',
   'chart.loading': '載入分析趨勢…', 'chart.sampled': '共 {total} 筆資料，本圖呈現 {rendered} 個代表點',
+  'loading.data': '載入資料…', 'loading.stats': '載入統計資料…',
+  'loading.records': '載入評分紀錄…', 'loading.users': '載入使用者帳號…',
   'mode.verify_tip': '檔名含分數，將 AI 評分與醫師評分對照，用於驗證準確度',
   'mode.predict_tip': '檔名無分數，由 AI 純預測評分，用於評分新案例',
 });
@@ -222,6 +224,8 @@ Object.assign(I18N.en, {
   'chart.metric_ai': 'AI Score', 'chart.metric_damage': 'Damage %', 'chart.metric_white': 'White %',
   'chart.zoom_hint': 'Scroll to zoom · Drag to pan · Double-click to reset', 'chart.reset_zoom': 'Reset Zoom',
   'chart.loading': 'Loading analysis trend…', 'chart.sampled': 'Showing {rendered} representative points from {total} records',
+  'loading.data': 'Loading data…', 'loading.stats': 'Loading statistics…',
+  'loading.records': 'Loading assessment records…', 'loading.users': 'Loading user accounts…',
   'mode.verify_tip': 'Filename has a score; compares AI vs doctor score to verify accuracy',
   'mode.predict_tip': 'Filename has no score; AI predicts the score for new cases',
 });

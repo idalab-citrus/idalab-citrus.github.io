@@ -35,6 +35,8 @@ class InfiniteTable {
     this.hasMore = true;
     this.loading = false;
     this._firstPage = true;
+    this._loadSeq = 0;
+    this._abortController = null;
 
     this._initSortHeaders();
     this._initObserver();
@@ -98,6 +100,9 @@ class InfiniteTable {
   }
 
   reload() {
+    if (this._abortController) this._abortController.abort();
+    this._loadSeq += 1;
+    this.loading = false;
     this.page = 1;
     this.hasMore = true;
     this._firstPage = true;
@@ -107,6 +112,13 @@ class InfiniteTable {
 
   async loadMore() {
     if (this.loading || !this.hasMore) return;
+    const isFirstPage = this._firstPage;
+    const surfaceLoading = isFirstPage && typeof beginDataLoading === 'function'
+      ? beginDataLoading(this.root, { labelKey: 'loading.records' })
+      : null;
+    const loadSeq = this._loadSeq;
+    const controller = new AbortController();
+    this._abortController = controller;
     this.loading = true;
     if (this.sentinel) this.sentinel.classList.add('loading');
 
@@ -116,9 +128,10 @@ class InfiniteTable {
 
     try {
       const res = (typeof apiFetch === 'function')
-        ? await apiFetch(`${this.endpoint}?${params}`)
-        : await fetch(`${this.endpoint}?${params}`);
+        ? await apiFetch(`${this.endpoint}?${params}`, { signal: controller.signal })
+        : await fetch(`${this.endpoint}?${params}`, { signal: controller.signal });
       const data = await res.json();
+      if (loadSeq !== this._loadSeq) return;
       const records = data.records || [];
 
       if (this._firstPage && this.onFirstPage) {
@@ -135,13 +148,18 @@ class InfiniteTable {
       this.page += 1;
       this._firstPage = false;
     } catch (e) {
+      if (e && e.name === 'AbortError') return;
       console.error('載入失敗', e);
       if (this._firstPage) {
         this.tbody.innerHTML = `<tr><td colspan="${this.colspan}" class="empty">載入失敗</td></tr>`;
       }
     } finally {
-      this.loading = false;
-      if (this.sentinel) this.sentinel.classList.remove('loading');
+      if (loadSeq === this._loadSeq) {
+        this.loading = false;
+        this._abortController = null;
+        if (this.sentinel) this.sentinel.classList.remove('loading');
+      }
+      if (surfaceLoading && typeof endDataLoading === 'function') endDataLoading(surfaceLoading);
     }
   }
 }
