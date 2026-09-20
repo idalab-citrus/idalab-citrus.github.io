@@ -45,7 +45,8 @@
 [data-theme="dark"] .auth-page{background-image:radial-gradient(ellipse 70% 60% at 20% 0%,#0E1A1C,transparent 55%),radial-gradient(ellipse 60% 50% at 90% 100%,#1A1410,transparent 50%)}
 [data-theme="dark"] .dz-btn{background:var(--teal);color:#06251f}
 [data-theme="dark"] .auth-btn{background:var(--teal);color:#06251f}
-html{transition:none}
+html{transition:none;max-width:100%;overflow-x:clip}
+body{max-width:100%;overflow-x:clip}
 body,header,.card,.table-card,.summary,.dropzone,.field input,.data-table thead th{transition:background-color .25s,border-color .25s,color .25s}
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -74,8 +75,8 @@ header{
   position:sticky;top:0;z-index:50;
 }
 [data-theme="dark"] header{box-shadow:0 1px 0 var(--glass-edge) inset,0 2px 12px rgba(0,0,0,.3)}
-.header-inner{max-width:1240px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:14px}
+.header-inner{max-width:1440px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0;flex-shrink:0}
 .brand-mark{
   width:46px;height:46px;border-radius:15px;flex-shrink:0;padding:6px;
   background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(204,251,241,.82));
@@ -236,17 +237,18 @@ body:not(.is-staff) .staff-only{display:none !important}
 .err-body svg{width:22px;height:22px;flex-shrink:0}
 
 footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:40px}
-.site-footer{padding:22px 32px;margin-top:0;background:color-mix(in srgb,var(--glass-chrome) 84%,transparent);border-top:1px solid var(--glass-edge);backdrop-filter:var(--glass-chrome-blur);-webkit-backdrop-filter:var(--glass-chrome-blur)}
-.site-footer-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;text-align:left}
+.site-footer{padding:14px 28px;margin-top:0;background:color-mix(in srgb,var(--bg) 94%,var(--card));border-top:1px solid var(--line);backdrop-filter:none;-webkit-backdrop-filter:none}
+.site-footer-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;text-align:left}
 .footer-brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
-.footer-brand img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:12px;padding:3px;box-shadow:0 3px 12px rgba(15,23,42,.12)}
+.footer-lab-emblem{position:relative;display:block;width:42px;height:42px;flex:0 0 42px;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 8px rgba(15,23,42,.08)}
+.footer-lab-emblem::before{content:"";position:absolute;width:62px;height:62px;left:-10px;top:-3px;background:url('../img/ida-lab-logo.png') center top/62px 62px no-repeat}
 .footer-brand strong{display:block;font-family:'Fraunces',serif;font-size:14px;line-height:1.1}
 .footer-brand span{display:block;color:var(--ink-faint);font-size:10px;letter-spacing:.03em;margin-top:3px}
-.footer-meta{font-size:11px;letter-spacing:.04em;text-align:right}
+.footer-meta{font-size:11px;letter-spacing:.035em;text-align:right;color:var(--ink-faint);white-space:nowrap}
 .footer-meta a{color:var(--teal);font-weight:700;text-decoration:none}
 .footer-meta a:hover{text-decoration:underline}
 .footer-meta span{margin:0 6px;color:var(--teal)}
-@media(max-width:680px){.site-footer{padding:20px 16px}.site-footer-inner{flex-direction:column;align-items:flex-start;gap:12px}.footer-meta{text-align:left}}
+@media(max-width:900px){.site-footer{padding:16px 18px}.site-footer-inner{flex-direction:column;align-items:flex-start;gap:10px}.footer-meta{text-align:left;white-space:normal}}
 
 /* ── 影像檢視器 v2 (醫療影像 PACS 風格：視圖切換 + 偵測前後對比滑桿) ── */
 .lightbox{position:fixed;inset:0;background:rgba(8,12,18,.92);backdrop-filter:blur(8px);display:none;flex-direction:column;z-index:300;opacity:0;transition:opacity .25s}
@@ -285,7 +287,7 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
    ========================================================================== */
 
 /* ── 頂部導覽列 ── */
-.topnav{display:flex;align-items:center;gap:8px}
+.topnav{display:flex;align-items:center;gap:6px;min-width:0;flex-shrink:0}
 .navlink{font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;padding:8px 14px;border-radius:9px;transition:all .2s}
 .navlink:hover{background:var(--teal-faint);color:var(--teal);box-shadow:0 4px 12px -4px rgba(15,118,110,.35)}
 .navlink.active{background:var(--teal-faint);color:var(--teal);font-weight:600}
@@ -315,6 +317,14 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
   .brand-sub{display:none}
   .nav-user{display:none}
   .navlink{padding:8px 10px;font-size:13px}
+}
+
+@media(max-width:1360px){
+  .header-inner{padding-left:20px;padding-right:20px;gap:14px}
+  .brand-title{font-size:18px}
+  .brand-sub{display:none}
+  .navlink{padding-left:10px;padding-right:10px}
+  .nav-user{margin-left:6px;padding-left:10px}
 }
 
 /* ── Flash 訊息 ── */
@@ -596,9 +606,9 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
   .sm-cell .v{font-size:22px}
 }
 
-/* 平板直式 / 窄筆電 (≤900px)：標頭改兩列 (品牌一列、導覽一列可橫滑)，
-   單列在 700–900px 會把導覽擠到折字 */
-@media(max-width:900px){
+/* 平板直式 / 窄筆電 (≤1120px)：標頭改兩列 (品牌一列、導覽一列可橫滑)，
+   單列會把導覽擠出畫面 */
+@media(max-width:1120px){
   .header-inner{flex-wrap:wrap;gap:8px;padding:12px 18px}
   .brand-title{font-size:17px}
   .topnav{width:100%;justify-content:flex-start;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
