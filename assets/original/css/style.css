@@ -77,13 +77,17 @@ header{
 .header-inner{max-width:1240px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:14px}
 .brand-mark{
-  width:42px;height:42px;border-radius:12px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--teal),var(--teal-bright));
-  box-shadow:0 4px 12px rgba(15,118,110,.28);display:grid;place-items:center;
+  width:46px;height:46px;border-radius:15px;flex-shrink:0;padding:6px;
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(204,251,241,.82));
+  border:1px solid rgba(20,184,166,.28);
+  box-shadow:0 7px 18px rgba(15,118,110,.16),inset 0 1px 0 rgba(255,255,255,.8);
+  display:grid;place-items:center;overflow:hidden;position:relative;isolation:isolate;
 }
-.brand-mark svg{width:24px;height:24px}
+.brand-mark::before{content:"";position:absolute;inset:-35%;z-index:-1;background:radial-gradient(circle at 24% 18%,rgba(45,212,191,.25),transparent 43%),radial-gradient(circle at 82% 78%,rgba(245,158,11,.16),transparent 38%)}
+.brand-mark img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(15,23,42,.16))}
+[data-theme="dark"] .brand-mark{background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(19,78,74,.30));border-color:rgba(94,234,212,.22);box-shadow:0 8px 22px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
 .brand-title{font-family:'Fraunces',serif;font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1}
-.brand-sub{font-size:11.5px;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase;margin-top:1px}
+.brand-sub{font-size:10.5px;color:var(--teal);letter-spacing:.13em;text-transform:uppercase;margin-top:4px;font-weight:700}
 .header-meta{display:flex;gap:24px;align-items:center}
 .stat-pill{text-align:right}
 .stat-pill .v{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;color:var(--teal)}
@@ -232,6 +236,17 @@ body:not(.is-staff) .staff-only{display:none !important}
 .err-body svg{width:22px;height:22px;flex-shrink:0}
 
 footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:40px}
+.site-footer{padding:22px 32px;margin-top:0;background:color-mix(in srgb,var(--glass-chrome) 84%,transparent);border-top:1px solid var(--glass-edge);backdrop-filter:var(--glass-chrome-blur);-webkit-backdrop-filter:var(--glass-chrome-blur)}
+.site-footer-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;text-align:left}
+.footer-brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
+.footer-brand img{width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(15,23,42,.16))}
+.footer-brand strong{display:block;font-family:'Fraunces',serif;font-size:14px;line-height:1.1}
+.footer-brand span{display:block;color:var(--ink-faint);font-size:10px;letter-spacing:.03em;margin-top:3px}
+.footer-meta{font-size:11px;letter-spacing:.04em;text-align:right}
+.footer-meta a{color:var(--teal);font-weight:700;text-decoration:none}
+.footer-meta a:hover{text-decoration:underline}
+.footer-meta span{margin:0 6px;color:var(--teal)}
+@media(max-width:680px){.site-footer{padding:20px 16px}.site-footer-inner{flex-direction:column;align-items:flex-start;gap:12px}.footer-meta{text-align:left}}
 
 /* ── 影像檢視器 v2 (醫療影像 PACS 風格：視圖切換 + 偵測前後對比滑桿) ── */
 .lightbox{position:fixed;inset:0;background:rgba(8,12,18,.92);backdrop-filter:blur(8px);display:none;flex-direction:column;z-index:300;opacity:0;transition:opacity .25s}
@@ -311,10 +326,12 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
 /* ── 認證頁 ── */
 .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;
   background-image:radial-gradient(ellipse 70% 60% at 20% 0%,var(--teal-faint),transparent 55%),radial-gradient(ellipse 60% 50% at 90% 100%,var(--amber-faint),transparent 50%);}
-.auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg)}
+.auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg);overflow:hidden}
+.auth-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright) 58%,#F59E0B)}
 .auth-brand{text-align:center;margin-bottom:28px}
-.auth-mark{width:54px;height:54px;margin:0 auto 18px;border-radius:15px}
-.auth-mark svg{width:30px;height:30px}
+.auth-mark{width:92px;height:92px;margin:0 auto 14px;border-radius:27px;padding:11px;box-shadow:0 18px 36px rgba(15,118,110,.18),inset 0 1px 0 rgba(255,255,255,.9)}
+.auth-mark img{width:100%;height:100%}
+.auth-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:9px}
 .auth-title{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
 .auth-sub{font-size:14px;color:var(--ink-faint);margin-top:6px}
 .auth-form{display:flex;flex-direction:column;gap:16px}
@@ -480,6 +497,9 @@ footer{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;bo
 .auth-lang{text-align:center;margin-top:16px;font-size:12.5px;color:var(--ink-faint)}
 .auth-lang button{background:none;border:none;color:var(--teal);font-family:inherit;font-size:12.5px;cursor:pointer;font-weight:600}
 .auth-lang button:hover{text-decoration:underline}
+.auth-affiliation{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--ink-faint);letter-spacing:.02em}
+.auth-affiliation a{color:var(--teal);font-weight:700;text-decoration:none}
+.auth-affiliation a:hover{text-decoration:underline}
 
 /* ==========================================================================
    Toast 通知 (右上角浮動)
