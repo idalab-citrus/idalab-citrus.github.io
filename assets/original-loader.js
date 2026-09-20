@@ -6,7 +6,11 @@
   const routes = {"/":"analyze", "/login":"login", "/register":"register", "/history":"history", "/admin":"admin", "/settings":"settings", "/admin/student":"student", "/forgot-password":"forgot-password", "/reset-password":"reset-password"};
   const page = routes[path];
   const status = document.getElementById("loadStatus");
-  if (!page) { status.textContent = "找不到頁面。請返回首頁。"; return; }
+  function showError(message) {
+    status.textContent = message;
+    document.body.classList.add("load-failed");
+  }
+  if (!page) { showError("找不到頁面。請返回首頁。"); return; }
   const cfg = window.CITRUS_CONFIG;
   const token = sessionStorage.getItem("citrus_api_token");
   const publicPage = ["login", "register", "forgot-password", "reset-password"].includes(page);
@@ -52,6 +56,6 @@
     document.write("<!doctype html>" + doc.documentElement.outerHTML);
     document.close();
   } catch (error) {
-    status.textContent = error.message === "Failed to fetch" ? "目前無法連線至實驗室主機，請稍後重試。" : error.message;
+    showError(error.message === "Failed to fetch" ? "目前無法連線至實驗室主機，請稍後重試。" : error.message);
   }
 })();
