@@ -1,10 +1,44 @@
 /* ==========================================================================
    chart.js — 股票圖風格進步曲線 (三指標/縮放/平移/tooltip/響應式)
    ========================================================================== */
+const _trendLoadingTokens = new WeakMap();
+
+function beginTrendLoading(selector) {
+  const host = document.querySelector(selector);
+  const card = host && host.closest('.chart-card');
+  if (!host || !card) return null;
+  const previous = _trendLoadingTokens.get(card);
+  if (previous) clearTimeout(previous.timer);
+
+  const token = { host, card, timer: null, visibleAt: 0 };
+  host.setAttribute('aria-busy', 'true');
+  token.timer = window.setTimeout(() => {
+    if (_trendLoadingTokens.get(card) !== token) return;
+    token.visibleAt = performance.now();
+    card.classList.add('chart-is-loading');
+  }, 140);
+  _trendLoadingTokens.set(card, token);
+  return token;
+}
+
+function endTrendLoading(token) {
+  if (!token) return;
+  clearTimeout(token.timer);
+  if (_trendLoadingTokens.get(token.card) !== token) return;
+  token.host.setAttribute('aria-busy', 'false');
+  const wait = token.visibleAt ? Math.max(0, 280 - (performance.now() - token.visibleAt)) : 0;
+  window.setTimeout(() => {
+    if (_trendLoadingTokens.get(token.card) !== token) return;
+    token.card.classList.remove('chart-is-loading');
+    _trendLoadingTokens.delete(token.card);
+  }, wait);
+}
+
 class TrendChart {
-  constructor(selector, points) {
+  constructor(selector, points, meta = {}) {
     this.container = document.querySelector(selector);
     this.container.classList.add('chart-content-mounting');
+    this.meta = meta || {};
     this.all = (points || []).filter(p => p.ts).sort((a, b) => a.ts - b.ts);
     this.metric = 'ai';
     this.H = 300;
@@ -58,8 +92,10 @@ class TrendChart {
           <button class="chart-reset" type="button">${t('chart.reset_zoom')}</button>
         </div>
       </div>
-      <div class="chart-canvas"></div>`;
+      <div class="chart-canvas"></div>
+      <div class="chart-sample-note" aria-live="polite"></div>`;
     this.canvas = this.container.querySelector('.chart-canvas');
+    this._syncMeta();
     this.container.querySelectorAll('.chart-metrics button').forEach(b => {
       b.addEventListener('click', () => {
         this.metric = b.dataset.m;
@@ -73,8 +109,19 @@ class TrendChart {
   setMetric(m) { this.metric = m; this.render(); }
   resetZoom() { this.dMin = this.fullMin; this.dMax = this.fullMax; this.render(); }
 
+  _syncMeta() {
+    const note = this.container.querySelector('.chart-sample-note');
+    if (!note) return;
+    const sampled = Boolean(this.meta && this.meta.sampled);
+    note.textContent = sampled
+      ? t('chart.sampled').replace('{total}', this.meta.total).replace('{rendered}', this.meta.rendered)
+      : '';
+    note.classList.toggle('show', sampled);
+  }
+
   // ★ 新增：無縫更新圖表資料的方法
-  updateData(points) {
+  updateData(points, meta = {}) {
+    this.meta = meta || {};
     this.all = (points || []).filter(p => p.ts).sort((a, b) => a.ts - b.ts);
     if (this.all.length) {
       this.fullMin = 0;
@@ -85,6 +132,7 @@ class TrendChart {
     }
     this.dMin = this.fullMin; 
     this.dMax = this.fullMax;
+    this._syncMeta();
     this.render();
   }
 
