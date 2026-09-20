@@ -1,0 +1,5 @@
+# 資安問題通報 / Security contact
+# 若您發現本系統的資安漏洞，請private通報，勿公開揭露。
+Contact: mailto:請填入你的聯絡信箱
+Preferred-Languages: zh-Hant, en
+Expires: 2027-12-31T23:59:59.000Z
