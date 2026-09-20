@@ -4,6 +4,7 @@
 class TrendChart {
   constructor(selector, points) {
     this.container = document.querySelector(selector);
+    this.container.classList.add('chart-content-mounting');
     this.all = (points || []).filter(p => p.ts).sort((a, b) => a.ts - b.ts);
     this.metric = 'ai';
     this.H = 300;
@@ -23,6 +24,16 @@ class TrendChart {
     this._build();
     this._bindEvents();
     this.render();
+    this._revealInitial();
+  }
+
+  _revealInitial() {
+    if (this._hasRevealed) return;
+    this._hasRevealed = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      this.container.classList.remove('chart-content-mounting');
+      this.container.classList.add('chart-content-ready');
+    }));
   }
 
   metricColor() {
