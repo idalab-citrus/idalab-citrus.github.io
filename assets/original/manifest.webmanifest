@@ -1,7 +1,7 @@
 {
-  "name": "Citrus Surgical Scorer",
-  "short_name": "Citrus Scorer",
-  "description": "外科剝離影像 AI 評分系統",
+  "name": "AI-Enhanced Image Scoring System",
+  "short_name": "AI Image Scoring",
+  "description": "AI 增強影像評分系統於手術訓練之應用",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
