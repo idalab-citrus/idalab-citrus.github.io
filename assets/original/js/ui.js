@@ -156,8 +156,76 @@ function endButtonLoading(token) {
   _buttonLoadingStates.delete(token.button);
 }
 
+/* ── 密碼欄位：全站一致的顯示／隱藏控制 ──
+   按鈕可用鍵盤操作，aria-pressed 與標籤會跟目前狀態及介面語言同步。 */
+let _passwordFieldSeq = 0;
+
+function _passwordToggleLabel(visible) {
+  const key = visible ? 'a11y.hide_password' : 'a11y.show_password';
+  if (typeof t === 'function') return t(key);
+  return visible ? 'Hide password' : 'Show password';
+}
+
+function _syncPasswordToggle(button) {
+  const input = document.getElementById(button.getAttribute('aria-controls'));
+  if (!input) return;
+  const visible = input.type === 'text';
+  const label = _passwordToggleLabel(visible);
+  button.setAttribute('aria-label', label);
+  button.setAttribute('title', label);
+  button.setAttribute('aria-pressed', visible ? 'true' : 'false');
+  button.classList.toggle('is-visible', visible);
+}
+
+function initPasswordToggles(root) {
+  (root || document).querySelectorAll('input[type="password"]:not([data-password-toggle-ready])').forEach(input => {
+    input.dataset.passwordToggleReady = 'true';
+    if (!input.id) input.id = 'password-field-' + (++_passwordFieldSeq);
+
+    const wrap = document.createElement('span');
+    wrap.className = 'password-input-wrap';
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'password-toggle';
+    button.setAttribute('aria-controls', input.id);
+    button.innerHTML = '<svg class="password-eye password-eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></svg><svg class="password-eye password-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16.5 16.5 0 0 1-2.3 2.9M14.2 14.2A3.1 3.1 0 0 1 9.8 9.8M6.2 7.3C3.8 9.1 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.8-.4 4-.9"/></svg>';
+    button.addEventListener('click', () => {
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      _syncPasswordToggle(button);
+      input.focus({ preventScroll: true });
+      try { input.setSelectionRange(start, end); } catch (e) {}
+    });
+    wrap.appendChild(button);
+    _syncPasswordToggle(button);
+  });
+}
+
+/* 補上常見表單控制項的可存取名稱；優先使用畫面上的欄位標籤。 */
+function enhanceFormAccessibility(root) {
+  (root || document).querySelectorAll('input:not([type="hidden"]),select,textarea').forEach((control, index) => {
+    if (control.getAttribute('aria-label') || control.getAttribute('aria-labelledby')) return;
+    const explicit = control.id && document.querySelector('label[for="' + CSS.escape(control.id) + '"]');
+    if (explicit || control.closest('label')) return;
+    const fieldLabel = control.closest('.field') && control.closest('.field').querySelector('.field-label');
+    if (fieldLabel) {
+      if (!fieldLabel.id) fieldLabel.id = 'field-label-' + index + '-' + Date.now().toString(36);
+      control.setAttribute('aria-labelledby', fieldLabel.id);
+      return;
+    }
+    const fallback = control.getAttribute('placeholder') || control.getAttribute('title');
+    if (fallback) control.setAttribute('aria-label', fallback);
+  });
+}
+
 // 傳統表單（登入、註冊、忘記密碼、登出）送出後也提供一致的等待回饋。
 document.addEventListener('DOMContentLoaded', () => {
+  initPasswordToggles();
+  enhanceFormAccessibility();
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', (event) => {
       if (event.defaultPrevented) return;
@@ -165,6 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (button) requestAnimationFrame(() => beginButtonLoading(button));
     });
   });
+});
+document.addEventListener('langchange', () => {
+  document.querySelectorAll('.password-toggle').forEach(_syncPasswordToggle);
+  enhanceFormAccessibility();
 });
 
 /* ── 分數 → 顏色 / 等第 (全站共用；index 卡片、歷史表格、詳情彈窗都用) ── */
