@@ -26,6 +26,7 @@
   --glass-edge:rgba(255,255,255,.6);
 }
 [lang="zh-Hant"]{
+  --font-sans:'Noto Sans TC','Microsoft JhengHei','PingFang TC',system-ui,sans-serif;
   --font-display:'Noto Sans TC','Microsoft JhengHei','PingFang TC',system-ui,sans-serif;
 }
 
