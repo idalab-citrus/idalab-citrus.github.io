@@ -93,7 +93,7 @@ const I18N = {
     'import.btn': '開始匯入', 'import.default_pw': '未填密碼者預設為 citrus123',
     'import.default_pw_title': '未填密碼者一律預設為', 'import.default_pw_hint': '— 請通知這些學生首次登入後立即到「設定」修改密碼',
     // 詳情彈窗
-    'detail.title': '偵測詳情', 'detail.analyzing': '正在重新分析影像...',
+    'detail.title': '偵測詳情', 'detail.analyzing': '正在載入過去分析…',
     'detail.summary': '綜合評定', 'detail.doctor_score': '主持人評估', 'detail.abs_error': '絕對誤差',
     'detail.new_case': 'AI 輔助評估', 'detail.damage_feat': '破皮特徵', 'detail.white_feat': '白膜特徵',
     'detail.optics_feat': '色彩特徵', 'detail.damage_ratio': '破損佔比', 'detail.damage_count': '破損區塊數',
@@ -181,7 +181,7 @@ const I18N = {
     'import.format': 'e.g. student01,pass123,s1@mail.com,student', 'import.choose': 'Choose CSV',
     'import.btn': 'Start Import', 'import.default_pw': 'Default password is citrus123 if blank',
     'import.default_pw_title': 'Blank passwords default to', 'import.default_pw_hint': '— tell those students to change it in Settings right after first login',
-    'detail.title': 'Detection Details', 'detail.analyzing': 'Re-analyzing image...',
+    'detail.title': 'Detection Details', 'detail.analyzing': 'Loading previous analysis…',
     'detail.summary': 'Assessment', 'detail.doctor_score': 'Facilitator Evaluation', 'detail.abs_error': 'Abs Error',
     'detail.new_case': 'AI-Assisted Evaluation', 'detail.damage_feat': 'Damage', 'detail.white_feat': 'White Residue',
     'detail.optics_feat': 'Optics', 'detail.damage_ratio': 'Damage Ratio', 'detail.damage_count': 'Damage Blocks',

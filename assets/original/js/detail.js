@@ -36,7 +36,7 @@ function closeDetailModal() {
 async function openDetailModal(analysisId) {
   const m = _ensureModal();
   const content = m.querySelector('#detailContent');
-  content.innerHTML = `<div class="detail-loading"><div class="spinner"></div><p>${t('detail.analyzing')}</p></div>`;
+  content.innerHTML = `<div class="detail-loading" role="status" aria-live="polite"><div class="spinner" aria-hidden="true"></div><p>${t('detail.analyzing')}</p></div>`;
   m.classList.add('show');
 
   try {

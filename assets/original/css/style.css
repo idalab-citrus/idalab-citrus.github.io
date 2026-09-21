@@ -106,7 +106,7 @@ main{width:100%;max-width:1240px;margin:0 auto;padding:40px 32px 80px;flex:1 0 a
 .hero{margin-bottom:32px}
 .hero h1{font-family:var(--font-display);font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1.15}
 .hero h1 .accent{color:var(--teal);font-style:italic}
-.hero p{color:var(--ink-soft);font-size:15px;margin-top:8px;max-width:640px}
+.hero p{color:var(--ink-soft);font-size:15px;margin-top:8px;max-width:100%;min-height:23px;white-space:nowrap}
 
 /* ── Dropzone ── */
 .dropzone{
@@ -668,6 +668,7 @@ body:not(.is-staff) .staff-only{display:none !important}
   .header-inner{padding:10px 14px}
   .brand-title{font-size:15px}
   .navlink{padding:9px 12px;font-size:13px}           /* 觸控目標 ≥ 38px 高 */
+  .hero p{min-height:46px;white-space:normal}
   .logout-btn{padding:9px 12px}
   .nav-user{padding-left:8px}
   .nav-name{display:none}
