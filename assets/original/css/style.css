@@ -3,7 +3,7 @@
    ========================================================================== */
 :root{
   --font-sans:'IBM Plex Sans','Noto Sans TC','Microsoft JhengHei','PingFang TC',system-ui,-apple-system,sans-serif;
-  --font-display:'Fraunces','Noto Serif TC','Noto Sans TC','Microsoft JhengHei',serif;
+  --font-display:'Fraunces','Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;
   --font-mono:'IBM Plex Mono','Noto Sans TC','Microsoft JhengHei',monospace;
   --bg:#FBFCFD; --bg-grad-1:#F0F7F6; --bg-grad-2:#FCF8F0;
   --card:#FFFFFF; --ink:#0F172A; --ink-soft:#475569; --ink-faint:#94A3B8;
@@ -24,6 +24,9 @@
   --glass-surface:rgba(255,255,255,.82);
   --glass-data:rgba(255,255,255,.92);
   --glass-edge:rgba(255,255,255,.6);
+}
+[lang="zh-Hant"]{
+  --font-display:'Noto Sans TC','Microsoft JhengHei','PingFang TC',system-ui,sans-serif;
 }
 
 /* ── 暗色模式 ── */

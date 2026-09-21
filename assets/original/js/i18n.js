@@ -24,7 +24,7 @@ const I18N = {
     'page.error': '錯誤 · AI 評分系統',
     'role.admin': '管理者', 'role.student': '學生',
     // 登入
-    'login.subtitle': '登入以使用 AI 評分系統',
+    'login.subtitle': 'NTOU · IDA LAB',
     'login.account': '帳號', 'login.password': '密碼', 'login.remember': '記住我',
     'login.btn': '登入', 'login.no_account': '還沒有帳號？', 'login.register_now': '立即註冊',
     'login.ph_account': '輸入您的帳號', 'login.ph_password': '輸入您的密碼',
@@ -121,7 +121,7 @@ const I18N = {
     'page.settings': 'Settings · AI Scoring System', 'page.student': 'Student Records · AI Scoring System',
     'page.error': 'Error · AI Scoring System',
     'role.admin': 'Admin', 'role.student': 'Student',
-    'login.subtitle': 'Sign in to use the AI Scoring System',
+    'login.subtitle': 'NTOU · IDA LAB',
     'login.account': 'Username', 'login.password': 'Password', 'login.remember': 'Remember me',
     'login.btn': 'Sign In', 'login.no_account': "Don't have an account? ", 'login.register_now': 'Register now',
     'login.ph_account': 'Enter your username', 'login.ph_password': 'Enter your password',
