@@ -52,7 +52,7 @@
 [data-theme="dark"] .auth-page{background-image:radial-gradient(ellipse 70% 60% at 20% 0%,#0E1A1C,transparent 55%),radial-gradient(ellipse 60% 50% at 90% 100%,#1A1410,transparent 50%)}
 [data-theme="dark"] .dz-btn{background:var(--teal);color:#06251f}
 [data-theme="dark"] .auth-btn{background:var(--teal);color:#06251f}
-html{transition:none;max-width:100%;overflow-x:clip}
+html{transition:none;max-width:100%;overflow-x:clip;scrollbar-gutter:stable}
 body{max-width:100%;overflow-x:clip;display:flex;flex-direction:column;min-height:100vh}
 body,header,.card,.table-card,.summary,.dropzone,.field input,.data-table thead th{transition:background-color .25s,border-color .25s,color .25s}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -104,7 +104,7 @@ header{
 
 /* ── Layout ── */
 main{width:100%;max-width:1240px;margin:0 auto;padding:40px 32px 80px;flex:1 0 auto}
-.hero{margin-bottom:32px}
+.hero{min-height:70px;margin-bottom:32px}
 .hero h1{font-family:var(--font-display);font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1.15}
 .hero h1 .accent{color:var(--teal);font-style:italic}
 .hero p{color:var(--ink-soft);font-size:15px;margin-top:8px;max-width:100%;min-height:23px;white-space:nowrap}
@@ -112,15 +112,15 @@ main{width:100%;max-width:1240px;margin:0 auto;padding:40px 32px 80px;flex:1 0 a
 /* ── Dropzone ── */
 .dropzone{
   border:2px dashed var(--line);border-radius:20px;background:var(--card);
-  padding:44px;text-align:center;transition:all .25s cubic-bezier(.4,0,.2,1);
+  min-height:300px;padding:44px;text-align:center;transition:all .25s cubic-bezier(.4,0,.2,1);
   cursor:pointer;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);
 }
 .dropzone:hover,.dropzone.drag{border-color:var(--teal-bright);background:linear-gradient(180deg,var(--teal-faint),var(--card) 60%);transform:translateY(-1px);box-shadow:var(--shadow-md)}
 .dz-icon{width:56px;height:56px;margin:0 auto 16px;border-radius:16px;background:var(--teal-faint);display:grid;place-items:center}
 .dz-icon svg{width:28px;height:28px;stroke:var(--teal)}
-.dz-title{font-size:17px;font-weight:600}
-.dz-sub{font-size:13.5px;color:var(--ink-faint);margin-top:5px}
-.dz-btn{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;padding:11px 22px;border-radius:11px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
+.dz-title{min-height:26px;font-size:17px;font-weight:600}
+.dz-sub{min-height:21px;font-size:13.5px;color:var(--ink-faint);margin-top:5px}
+.dz-btn{min-inline-size:142px;margin-top:18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;border:none;padding:11px 22px;border-radius:11px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
 .dz-btn:hover{background:var(--teal);transform:translateY(-1px)}
 .dz-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .dz-actions .dz-btn{margin-top:18px}
@@ -671,6 +671,7 @@ body:not(.is-staff) .staff-only{display:none !important}
   .header-inner{padding:10px 14px}
   .brand-title{font-size:15px}
   .navlink{padding:9px 12px;font-size:13px}           /* 觸控目標 ≥ 38px 高 */
+  .hero{min-height:84px}
   .hero p{min-height:46px;white-space:normal}
   .logout-btn{padding:9px 12px}
   .nav-user{padding-left:8px}
@@ -742,26 +743,27 @@ main{animation:pageIn .45s ease both}
 .dz-paste-hint{font-size:12px;color:var(--ink-faint);margin-top:10px}
 
 /* ── 新手引導：三步驟玻璃卡 ── */
-.onboard{position:relative;background:var(--glass-surface);border:1px solid var(--glass-edge);border-radius:18px;padding:20px 24px;margin-bottom:24px;box-shadow:var(--shadow-sm),inset 0 1px 0 var(--glass-edge);animation:rise .5s cubic-bezier(.2,.7,.3,1)}
+.onboard{position:relative;min-height:214px;background:var(--glass-surface);border:1px solid var(--glass-edge);border-radius:18px;padding:20px 24px;margin-bottom:24px;box-shadow:var(--shadow-sm),inset 0 1px 0 var(--glass-edge);animation:rise .5s cubic-bezier(.2,.7,.3,1)}
 .onboard.onboard-hide{opacity:0;transform:translateY(-8px);transition:opacity .3s,transform .3s}
 .onboard-title{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .onboard-title::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal-bright);box-shadow:0 0 8px var(--teal-bright)}
 .onboard-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--glass-edge);background:transparent;color:var(--ink-faint);font-size:13px;cursor:pointer;transition:all .2s;display:grid;place-items:center}
 .onboard-close:hover{background:var(--line-soft);color:var(--ink)}
 .onboard-steps{display:flex;align-items:flex-start;gap:8px}
-.onboard-step{flex:1;text-align:center;position:relative;padding:4px 8px}
+.onboard-step{flex:1;min-height:126px;text-align:center;position:relative;padding:4px 8px}
 .onboard-ico{width:44px;height:44px;margin:0 auto 10px;border-radius:13px;background:var(--teal-faint);display:grid;place-items:center}
 .onboard-ico svg{width:22px;height:22px;stroke:var(--teal)}
 .onboard-n{position:absolute;top:0;left:50%;margin-left:8px;width:18px;height:18px;border-radius:50%;background:var(--teal);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 [data-theme="dark"] .onboard-n{color:#06251f}
-.onboard-t{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
-.onboard-d{font-size:12px;color:var(--ink-soft);line-height:1.5;max-width:200px;margin:0 auto}
+.onboard-t{min-height:21px;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.onboard-d{min-height:54px;font-size:12px;color:var(--ink-soft);line-height:1.5;max-width:220px;margin:0 auto}
 .onboard-arrow{align-self:center;color:var(--ink-faint);font-size:18px;flex-shrink:0;padding-top:20px}
 @media(max-width:680px){
   /* 直向堆疊時 align-items 仍是 flex-start，每一步會縮成自己內容的寬度（三步寬度各異），
      中心點就各偏各的、跟箭頭也對不上。改成 stretch + 全寬，三步中心才會一致。 */
+  .onboard{min-height:0}
   .onboard-steps{flex-direction:column;align-items:stretch;gap:14px}
-  .onboard-step{width:100%;flex:none}
+  .onboard-step{width:100%;min-height:132px;flex:none}
   .onboard-arrow{transform:rotate(90deg);padding:0;align-self:center}
   .onboard-d{max-width:none}
 }
