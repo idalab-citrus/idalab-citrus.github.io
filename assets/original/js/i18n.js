@@ -13,22 +13,29 @@ const I18N = {
     // 導覽
     'nav.analyze': '分析', 'nav.history': '我的紀錄', 'nav.admin': '管理後台',
     'nav.settings': '設定', 'nav.logout': '登出',
-    'brand.name': 'AI 增強影像評分系統',
-    'footer.context': '國立臺灣海洋大學 · AI 增強影像評分系統於手術訓練之應用',
+    'brand.name': 'AI 評分系統',
+    'footer.context': '國立臺灣海洋大學 · AI 增強影像評分系統於手術訓練之應用：以柑橘剝皮模擬膿胸剝離術的原創模型',
+    'page.base': 'AI 評分系統 · IDA Lab', 'page.login': '登入 · AI 評分系統',
+    'page.register': '註冊 · AI 評分系統', 'page.forgot': '忘記密碼 · AI 評分系統',
+    'page.reset': '重設密碼 · AI 評分系統', 'page.analyze': '影像分析 · AI 評分系統',
+    'page.history': '我的紀錄 · AI 評分系統', 'page.admin': '管理後台 · AI 評分系統',
+    'page.settings': '設定 · AI 評分系統', 'page.student': '學生紀錄 · AI 評分系統',
+    'page.error': '錯誤 · AI 評分系統',
     'role.admin': '管理者', 'role.student': '學生',
     // 登入
-    'login.subtitle': '登入以使用 AI 增強影像評分系統',
+    'login.subtitle': '登入以使用 AI 評分系統',
     'login.account': '帳號', 'login.password': '密碼', 'login.remember': '記住我',
     'login.btn': '登入', 'login.no_account': '還沒有帳號？', 'login.register_now': '立即註冊',
     'login.ph_account': '輸入您的帳號', 'login.ph_password': '輸入您的密碼',
     // 註冊
-    'register.title': '建立帳號', 'register.subtitle': '註冊學生帳號，使用 AI 增強影像評分系統',
+    'register.title': '建立帳號', 'register.subtitle': '註冊學生帳號以使用 AI 評分系統',
+    'register.invite': '邀請碼', 'register.invite_ph': '輸入課程提供的邀請碼',
     'register.hint_account': '(至少 3 字元)', 'register.hint_email': '(選填)',
     'register.hint_password': '(至少 8 字元)', 'register.confirm': '確認密碼',
     'register.btn': '註冊', 'register.has_account': '已經有帳號了？', 'register.go_login': '前往登入',
     'register.ph_account': '設定您的帳號', 'register.ph_password': '設定密碼', 'register.ph_password2': '再次輸入密碼',
     // 分析頁
-    'index.title1': 'AI 增強', 'index.accent': '影像評分系統',
+    'index.title1': 'AI', 'index.accent': '評分系統',
     'index.desc': '上傳柑橘剝皮模擬訓練影像，系統將進行圖像處理、AI 輔助評估與 0–100 分評分。檔名含分數（如 75_001.jpg）時會進行模型驗證。',
     'index.drop_title': '拖曳影像至此，或點擊上傳', 'index.drop_sub': '支援多張同時上傳 · JPG / PNG / HEIC',
     'index.choose': '選擇影像',
@@ -86,8 +93,8 @@ const I18N = {
     'import.default_pw_title': '未填密碼者一律預設為', 'import.default_pw_hint': '— 請通知這些學生首次登入後立即到「設定」修改密碼',
     // 詳情彈窗
     'detail.title': '偵測詳情', 'detail.analyzing': '正在重新分析影像...',
-    'detail.summary': '綜合評定', 'detail.doctor_score': '醫師評分', 'detail.abs_error': '絕對誤差',
-    'detail.new_case': '新病例預測', 'detail.damage_feat': '破皮特徵', 'detail.white_feat': '白膜特徵',
+    'detail.summary': '綜合評定', 'detail.doctor_score': '主持人評估', 'detail.abs_error': '絕對誤差',
+    'detail.new_case': 'AI 輔助評估', 'detail.damage_feat': '破皮特徵', 'detail.white_feat': '白膜特徵',
     'detail.optics_feat': '色彩特徵', 'detail.damage_ratio': '破損佔比', 'detail.damage_count': '破損區塊數',
     'detail.max_block': '最大單塊佔比', 'detail.confidence': '模型信心度', 'detail.white_ratio': '白膜佔比',
     'detail.white_count': '白膜區塊數', 'detail.top3': '前三大佔比', 'detail.hsv_s': 'HSV 飽和度',
@@ -103,19 +110,26 @@ const I18N = {
   en: {
     'nav.analyze': 'Analyze', 'nav.history': 'My Records', 'nav.admin': 'Admin',
     'nav.settings': 'Settings', 'nav.logout': 'Log out',
-    'brand.name': 'AI-Enhanced Image Scoring System',
-    'footer.context': 'National Taiwan Ocean University · AI-Enhanced Image Scoring for Surgical Training',
+    'brand.name': 'AI Scoring System',
+    'footer.context': 'National Taiwan Ocean University · AI-Enhanced Image Scoring for Surgical Training: A Novel Citrus Peel Simulation Model for Thoracic Empyema Decortication',
+    'page.base': 'AI Scoring System · IDA Lab', 'page.login': 'Sign In · AI Scoring System',
+    'page.register': 'Register · AI Scoring System', 'page.forgot': 'Forgot Password · AI Scoring System',
+    'page.reset': 'Reset Password · AI Scoring System', 'page.analyze': 'Image Analysis · AI Scoring System',
+    'page.history': 'My Records · AI Scoring System', 'page.admin': 'Admin · AI Scoring System',
+    'page.settings': 'Settings · AI Scoring System', 'page.student': 'Student Records · AI Scoring System',
+    'page.error': 'Error · AI Scoring System',
     'role.admin': 'Admin', 'role.student': 'Student',
-    'login.subtitle': 'Sign in to use the AI-enhanced image scoring system',
+    'login.subtitle': 'Sign in to use the AI Scoring System',
     'login.account': 'Username', 'login.password': 'Password', 'login.remember': 'Remember me',
     'login.btn': 'Sign In', 'login.no_account': "Don't have an account? ", 'login.register_now': 'Register now',
     'login.ph_account': 'Enter your username', 'login.ph_password': 'Enter your password',
-    'register.title': 'Create Account', 'register.subtitle': 'Register a student account for the AI-enhanced image scoring system',
+    'register.title': 'Create Account', 'register.subtitle': 'Register a student account to use the AI Scoring System',
+    'register.invite': 'Invitation Code', 'register.invite_ph': 'Enter the course invitation code',
     'register.hint_account': '(min 3 chars)', 'register.hint_email': '(optional)',
     'register.hint_password': '(min 8 chars)', 'register.confirm': 'Confirm Password',
     'register.btn': 'Register', 'register.has_account': 'Already have an account? ', 'register.go_login': 'Sign in',
     'register.ph_account': 'Choose a username', 'register.ph_password': 'Set a password', 'register.ph_password2': 'Re-enter password',
-    'index.title1': 'AI-Enhanced', 'index.accent': 'Image Scoring System',
+    'index.title1': 'AI', 'index.accent': 'Scoring System',
     'index.desc': 'Upload citrus peel simulation training images for image processing, AI-assisted evaluation, and 0–100 scoring. Filenames that include a score, such as 75_001.jpg, are used for model validation.',
     'index.drop_title': 'Drag images here, or click to upload', 'index.drop_sub': 'Multiple images supported · JPG / PNG / HEIC',
     'index.choose': 'Choose Images',
@@ -166,8 +180,8 @@ const I18N = {
     'import.btn': 'Start Import', 'import.default_pw': 'Default password is citrus123 if blank',
     'import.default_pw_title': 'Blank passwords default to', 'import.default_pw_hint': '— tell those students to change it in Settings right after first login',
     'detail.title': 'Detection Details', 'detail.analyzing': 'Re-analyzing image...',
-    'detail.summary': 'Assessment', 'detail.doctor_score': 'Doctor Score', 'detail.abs_error': 'Abs Error',
-    'detail.new_case': 'New Case Prediction', 'detail.damage_feat': 'Damage', 'detail.white_feat': 'White Residue',
+    'detail.summary': 'Assessment', 'detail.doctor_score': 'Facilitator Evaluation', 'detail.abs_error': 'Abs Error',
+    'detail.new_case': 'AI-Assisted Evaluation', 'detail.damage_feat': 'Damage', 'detail.white_feat': 'White Residue',
     'detail.optics_feat': 'Optics', 'detail.damage_ratio': 'Damage Ratio', 'detail.damage_count': 'Damage Blocks',
     'detail.max_block': 'Largest Block', 'detail.confidence': 'Confidence', 'detail.white_ratio': 'White Ratio',
     'detail.white_count': 'White Blocks', 'detail.top3': 'Top 3 Ratio', 'detail.hsv_s': 'HSV Saturation',
@@ -202,8 +216,11 @@ Object.assign(I18N.zh, {
   'chart.loading': '載入分析趨勢…', 'chart.sampled': '共 {total} 筆資料，本圖呈現 {rendered} 個代表點',
   'loading.data': '載入資料…', 'loading.stats': '載入統計資料…',
   'loading.records': '載入評分紀錄…', 'loading.users': '載入使用者帳號…',
-  'mode.verify_tip': '檔名含分數，將 AI 評分與醫師評分對照，用於驗證準確度',
-  'mode.predict_tip': '檔名無分數，由 AI 純預測評分，用於評分新案例',
+  'mode.verify_tip': '檔名含分數，將 AI 評分與主持人評估對照，用於模型驗證',
+  'mode.predict_tip': '檔名無分數時，使用 AI 輔助評估產生評分結果',
+  'register.closed': '目前不開放自行註冊，請聯絡管理者建立帳號。',
+  'auth.connection_error': '無法連線，請重試', 'auth.operation_failed': '操作失敗',
+  'auth.completed': '完成，請登入', 'download.failed': '匯出失敗，請重試',
 });
 Object.assign(I18N.en, {
   'role.ta': 'TA',
@@ -226,8 +243,11 @@ Object.assign(I18N.en, {
   'chart.loading': 'Loading analysis trend…', 'chart.sampled': 'Showing {rendered} representative points from {total} records',
   'loading.data': 'Loading data…', 'loading.stats': 'Loading statistics…',
   'loading.records': 'Loading assessment records…', 'loading.users': 'Loading user accounts…',
-  'mode.verify_tip': 'Filename has a score; compares AI vs doctor score to verify accuracy',
-  'mode.predict_tip': 'Filename has no score; AI predicts the score for new cases',
+  'mode.verify_tip': 'A filename score is compared with the AI score for model validation',
+  'mode.predict_tip': 'Images without filename scores use AI-assisted evaluation',
+  'register.closed': 'Self-registration is currently closed. Please contact the administrator.',
+  'auth.connection_error': 'Unable to connect. Please try again.', 'auth.operation_failed': 'Operation failed',
+  'auth.completed': 'Completed. Please sign in.', 'download.failed': 'Export failed. Please try again.',
 });
 
 // UI 升級字串 (掃描佇列 / 影像檢視器 / 貼上提示)
@@ -277,7 +297,7 @@ Object.assign(I18N.en, {
 });
 
 function getLang() {
-  try { return localStorage.getItem('lang') || 'zh'; } catch (e) { return 'zh'; }
+  try { return localStorage.getItem('lang') || 'en'; } catch (e) { return 'en'; }
 }
 
 function t(key) {
@@ -297,6 +317,12 @@ function applyI18n() {
     const val = (I18N[lang] && I18N[lang][key]);
     if (val !== undefined) el.setAttribute('placeholder', val);
   });
+  document.querySelectorAll('[data-i18n-lang]').forEach(el => { el.value = lang; });
+  const pageKey = document.body && document.body.getAttribute('data-page-i18n');
+  if (pageKey) {
+    const title = (I18N[lang] && I18N[lang]['page.' + pageKey]);
+    if (title) document.title = title;
+  }
 }
 
 function setLang(lang) {
@@ -314,7 +340,7 @@ function setTheme(theme) {
 }
 
 function getTheme() {
-  try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+  try { return localStorage.getItem('theme') || 'dark'; } catch (e) { return 'dark'; }
 }
 
 document.addEventListener('DOMContentLoaded', applyI18n);

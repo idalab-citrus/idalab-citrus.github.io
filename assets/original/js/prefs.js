@@ -3,9 +3,9 @@
    ========================================================================== */
 (function () {
   try {
-    var theme = localStorage.getItem('theme') || 'light';
+    var theme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', theme);
-    var lang = localStorage.getItem('lang') || 'zh';
+    var lang = localStorage.getItem('lang') || 'en';
     document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
   } catch (e) { /* localStorage 不可用時略過 */ }
 })();

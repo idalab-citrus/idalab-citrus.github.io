@@ -1,17 +1,17 @@
 {
-  "name": "AI-Enhanced Image Scoring System",
-  "short_name": "AI Image Scoring",
-  "description": "AI 增強影像評分系統於手術訓練之應用",
+  "name": "AI Scoring System",
+  "short_name": "AI Scoring",
+  "description": "AI-Enhanced Image Scoring for Surgical Training: A Novel Citrus Peel Simulation Model for Thoracic Empyema Decortication",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#FBFCFD",
-  "theme_color": "#0F766E",
-  "lang": "zh-Hant",
+  "background_color": "#0B1120",
+  "theme_color": "#0B1120",
+  "lang": "en",
   "icons": [
     {
-      "src": "/static/favicon.svg",
+      "src": "favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

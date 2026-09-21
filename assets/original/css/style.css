@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AI 增強影像評分系統 — 臨床精密儀器風格
+   AI 評分系統 — 臨床精密儀器風格
    ========================================================================== */
 :root{
   --bg:#FBFCFD; --bg-grad-1:#F0F7F6; --bg-grad-2:#FCF8F0;
@@ -86,7 +86,7 @@ header{
 }
 .brand-mark::before{content:"";position:absolute;inset:-35%;z-index:-1;background:radial-gradient(circle at 24% 18%,rgba(45,212,191,.25),transparent 43%),radial-gradient(circle at 82% 78%,rgba(245,158,11,.16),transparent 38%)}
 .brand-mark img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(15,23,42,.16))}
-[data-theme="dark"] .brand-mark{background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(19,78,74,.30));border-color:rgba(94,234,212,.22);box-shadow:0 8px 22px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+[data-theme="dark"] .brand-mark{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.60);box-shadow:0 8px 24px rgba(45,212,191,.16),0 0 0 1px rgba(94,234,212,.12),inset 0 1px 0 #fff}
 .brand-title{font-family:'Fraunces',serif;font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1}
 .brand-sub{font-size:10.5px;color:var(--teal);letter-spacing:.13em;text-transform:uppercase;margin-top:4px;font-weight:700}
 .header-meta{display:flex;gap:24px;align-items:center}
@@ -325,8 +325,9 @@ body:not(.is-staff) .staff-only{display:none !important}
 .auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg);overflow:hidden}
 .auth-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright) 58%,#F59E0B)}
 .auth-brand{text-align:center;margin-bottom:24px}
-.auth-lab-logo{width:148px;height:148px;margin:0 auto 18px;background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:22px;padding:8px;box-shadow:0 16px 34px rgba(15,23,42,.16);overflow:hidden}
+.auth-lab-logo{width:112px;height:112px;margin:0 auto 18px;background:linear-gradient(145deg,#F8FFFE,#E6FAF6);border:1px solid rgba(20,184,166,.25);border-radius:28px;padding:13px;box-shadow:0 16px 34px rgba(15,118,110,.17),inset 0 1px 0 #fff;overflow:hidden}
 .auth-lab-logo img{display:block;width:100%;height:100%;object-fit:contain}
+[data-theme="dark"] .auth-lab-logo{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.62);box-shadow:0 18px 42px rgba(45,212,191,.18),0 0 0 1px rgba(94,234,212,.10),inset 0 1px 0 #fff}
 .auth-mark{width:92px;height:92px;margin:0 auto 14px;border-radius:27px;padding:11px;box-shadow:0 18px 36px rgba(15,118,110,.18),inset 0 1px 0 rgba(255,255,255,.9)}
 .auth-mark img{width:100%;height:100%}
 .auth-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:9px}
@@ -800,7 +801,7 @@ main{animation:pageIn .45s ease both}
 .auth-loader::before{content:"";position:absolute;width:min(70vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(20,184,166,.13),transparent 66%);animation:loaderAura 2.4s ease-in-out infinite}
 .auth-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
 .auth-loader-brand{position:relative;display:flex;flex-direction:column;align-items:center;gap:13px;animation:loaderBrandIn .55s cubic-bezier(.16,1,.3,1) both}
-.auth-loader-logo{width:90px;height:90px;padding:5px;border-radius:24px;background:#fff;border:1px solid rgba(255,255,255,.24);box-shadow:0 20px 55px rgba(0,0,0,.35),0 0 40px rgba(45,212,191,.08);overflow:hidden}
+.auth-loader-logo{width:90px;height:90px;padding:10px;border-radius:24px;background:linear-gradient(145deg,#F8FFFE,#E6FAF6);border:1px solid rgba(20,184,166,.30);box-shadow:0 20px 55px rgba(0,0,0,.25),0 0 42px rgba(45,212,191,.14);overflow:hidden}
 .auth-loader-logo img{display:block;width:100%;height:100%;object-fit:contain}
 .auth-loader-name{font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.26em;color:#0F766E;text-indent:.26em}
 .auth-loader-track{width:116px;height:2px;overflow:hidden;border-radius:999px;background:rgba(15,118,110,.13)}
@@ -809,6 +810,7 @@ main{animation:pageIn .45s ease both}
 [data-theme="dark"] .auth-loader::before{background:radial-gradient(circle,rgba(45,212,191,.16),transparent 66%)}
 [data-theme="dark"] .auth-loader-name{color:#C8FFF7}
 [data-theme="dark"] .auth-loader-track{background:rgba(255,255,255,.10)}
+[data-theme="dark"] .auth-loader-logo{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.62);box-shadow:0 22px 60px rgba(0,0,0,.45),0 0 46px rgba(45,212,191,.22)}
 @keyframes loaderBrandIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes loaderAura{50%{transform:scale(1.08);opacity:.72}}
 @keyframes loaderTrack{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
