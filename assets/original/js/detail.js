@@ -93,7 +93,7 @@ function _cardHTML(d) {
   return `
     <div class="detail-header">
       <div>
-        <div class="detail-fname">${esc(d.filename)}</div>
+        <div class="detail-fname" title="${esc(d.filename)}">${esc(d.filename)}</div>
         <div class="detail-meta">${d.owner ? esc(d.owner) + ' · ' : ''}${esc(d.created_at) || ''}　${t('detail.title')}</div>
       </div>
       ${isStaff ? `<span class="mode-tag ${isVerify ? 'mode-verify' : 'mode-predict'}">${isVerify ? t('mode.verify_full') : t('mode.predict_full')}</span>` : ''}
