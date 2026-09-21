@@ -84,7 +84,7 @@ header{
 }
 [data-theme="dark"] header{box-shadow:0 1px 0 var(--glass-edge) inset,0 2px 12px rgba(0,0,0,.3)}
 .header-inner{max-width:1440px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.brand{display:flex;align-items:center;gap:14px;min-width:0;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:14px;inline-size:290px;min-width:0;flex-shrink:0}
 .brand-mark{
   width:46px;height:46px;border-radius:15px;flex-shrink:0;padding:6px;
   background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(204,251,241,.82));
@@ -95,7 +95,7 @@ header{
 .brand-mark::before{content:"";position:absolute;inset:-35%;z-index:-1;background:radial-gradient(circle at 24% 18%,rgba(45,212,191,.25),transparent 43%),radial-gradient(circle at 82% 78%,rgba(245,158,11,.16),transparent 38%)}
 .brand-mark img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(15,23,42,.16))}
 [data-theme="dark"] .brand-mark{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.60);box-shadow:0 8px 24px rgba(45,212,191,.16),0 0 0 1px rgba(94,234,212,.12),inset 0 1px 0 #fff}
-.brand-title{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1}
+.brand-title{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1;overflow:hidden;text-overflow:ellipsis}
 .brand-sub{font-size:10.5px;color:var(--teal);letter-spacing:.13em;text-transform:uppercase;margin-top:4px;font-weight:700}
 .header-meta{display:flex;gap:24px;align-items:center}
 .stat-pill{text-align:right}
@@ -282,11 +282,11 @@ body:not(.is-staff) .staff-only{display:none !important}
 
 /* ── 頂部導覽列 ── */
 .topnav{display:flex;align-items:center;gap:6px;min-width:0;flex-shrink:0}
-.navlink{display:inline-flex;align-items:center;justify-content:center;min-inline-size:96px;font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;text-align:center;padding:8px 14px;border-radius:9px;transition:all .2s}
+.navlink{display:inline-flex;align-items:center;justify-content:center;inline-size:100px;min-inline-size:100px;flex:0 0 100px;font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;text-align:center;padding:8px 12px;border-radius:9px;transition:all .2s}
 .navlink:hover{background:var(--teal-faint);color:var(--teal);box-shadow:0 4px 12px -4px rgba(15,118,110,.35)}
 .navlink.active{background:var(--teal-faint);color:var(--teal);font-weight:600}
 /* 導覽列的主題/語言切換鈕 */
-.nav-prefs{display:flex;align-items:center;gap:4px;margin-left:8px}
+.nav-prefs{display:flex;align-items:center;gap:4px;inline-size:126px;flex:0 0 126px;margin-left:8px}
 .nav-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;transition:all .2s}
 .nav-icon-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-faint)}
 /* 語言分段控制：兩個選項並列，目前語言反白 (單顆按鈕看不出是現況還是動作) */
@@ -299,12 +299,13 @@ body:not(.is-staff) .staff-only{display:none !important}
 .nav-icon-btn .ico-moon{display:none}
 [data-theme="dark"] .nav-icon-btn .ico-sun{display:none}
 [data-theme="dark"] .nav-icon-btn .ico-moon{display:inline}
-.nav-user{display:flex;align-items:center;gap:8px;margin-left:12px;padding-left:16px;border-left:1px solid var(--line)}
-.nav-name{font-size:14px;font-weight:600;color:var(--ink)}
-.nav-role{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
+.nav-user{display:flex;align-items:center;justify-content:flex-end;gap:8px;inline-size:190px;flex:0 0 190px;margin-left:12px;padding-left:16px;border-left:1px solid var(--line)}
+.nav-name{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:14px;font-weight:600;color:var(--ink)}
+.nav-role{display:inline-flex;align-items:center;justify-content:center;min-inline-size:58px;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
 .role-admin{background:var(--amber-faint);color:var(--amber)}
 .role-student{background:var(--teal-faint);color:var(--teal)}
-.logout-btn{font-size:13px;color:var(--ink-faint);text-decoration:none;padding:8px 14px;border-radius:9px;border:1px solid var(--line);transition:all .2s;margin-left:4px;background:transparent;font-family:inherit;cursor:pointer;line-height:normal}
+.topnav>form{inline-size:76px;flex:0 0 76px}
+.logout-btn{inline-size:100%;font-size:13px;color:var(--ink-faint);text-decoration:none;padding:8px 10px;border-radius:9px;border:1px solid var(--line);transition:all .2s;margin-left:4px;background:transparent;font-family:inherit;cursor:pointer;line-height:normal}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
 
 @media(max-width:720px){
@@ -538,11 +539,11 @@ body:not(.is-staff) .staff-only{display:none !important}
 
 /* ── 中英語言轉場 ──
    先讓新語言完成排版再交接畫面，避免不同字寬造成視覺上的瞬間跳動。 */
-::view-transition-old(root),::view-transition-new(root){animation-duration:.24s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.18s;animation-timing-function:ease-out}
 ::view-transition-old(root){animation-name:languageFadeOut}
 ::view-transition-new(root){animation-name:languageFadeIn}
-@keyframes languageFadeOut{to{opacity:0;filter:blur(2px);transform:translateY(-2px)}}
-@keyframes languageFadeIn{from{opacity:0;filter:blur(2px);transform:translateY(3px)}to{opacity:1;filter:none;transform:none}}
+@keyframes languageFadeOut{to{opacity:.12}}
+@keyframes languageFadeIn{from{opacity:.12}to{opacity:1}}
 
 /* ==========================================================================
    Toast 通知 (右上角浮動)
@@ -654,9 +655,10 @@ body:not(.is-staff) .staff-only{display:none !important}
    單列會把導覽擠出畫面 */
 @media(max-width:1120px){
   .header-inner{flex-wrap:wrap;gap:8px;padding:12px 18px}
+  .brand{inline-size:auto}
   .brand-title{font-size:17px}
   .topnav{width:100%;justify-content:flex-start;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
-  .navlink{min-inline-size:88px}
+  .navlink{inline-size:96px;min-inline-size:96px;flex-basis:96px}
   .topnav::-webkit-scrollbar{height:0}
   .navlink{padding:8px 12px;font-size:13.5px}
   .nav-user{margin-left:auto;padding-left:10px}
