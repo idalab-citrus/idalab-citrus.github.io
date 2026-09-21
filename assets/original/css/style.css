@@ -278,7 +278,7 @@ body:not(.is-staff) .staff-only{display:none !important}
 
 /* ── 頂部導覽列 ── */
 .topnav{display:flex;align-items:center;gap:6px;min-width:0;flex-shrink:0}
-.navlink{font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;padding:8px 14px;border-radius:9px;transition:all .2s}
+.navlink{display:inline-flex;align-items:center;justify-content:center;min-inline-size:96px;font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;text-align:center;padding:8px 14px;border-radius:9px;transition:all .2s}
 .navlink:hover{background:var(--teal-faint);color:var(--teal);box-shadow:0 4px 12px -4px rgba(15,118,110,.35)}
 .navlink.active{background:var(--teal-faint);color:var(--teal);font-weight:600}
 /* 導覽列的主題/語言切換鈕 */
@@ -336,7 +336,7 @@ body:not(.is-staff) .staff-only{display:none !important}
 .auth-mark img{width:100%;height:100%}
 .auth-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:9px}
 .auth-title{font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
-.auth-sub{font-size:14px;color:var(--ink-faint);margin-top:6px}
+.auth-sub{min-height:21px;font-size:14px;color:var(--ink-faint);margin-top:6px}
 .auth-form{display:flex;flex-direction:column;gap:16px}
 .field{display:flex;flex-direction:column;gap:7px}
 .field-label{font-size:13px;font-weight:600;color:var(--ink-soft)}
@@ -528,7 +528,15 @@ body:not(.is-staff) .staff-only{display:none !important}
 .footer-lab-emblem img{display:block;width:100%;height:100%;object-fit:contain}
 .footer-brand-title{font-family:var(--font-display);font-size:16px;font-weight:650;color:var(--ink);line-height:1.2}
 .footer-brand-sub{margin-top:2px;font-size:10.5px;color:var(--ink-faint);letter-spacing:.035em;white-space:nowrap}
-.footer-context{font-size:11.5px;color:var(--ink-faint);text-align:right;line-height:1.55}
+.footer-context{min-height:36px;font-size:11.5px;color:var(--ink-faint);text-align:right;line-height:1.55}
+
+/* ── 中英語言轉場 ──
+   先讓新語言完成排版再交接畫面，避免不同字寬造成視覺上的瞬間跳動。 */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.24s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+::view-transition-old(root){animation-name:languageFadeOut}
+::view-transition-new(root){animation-name:languageFadeIn}
+@keyframes languageFadeOut{to{opacity:0;filter:blur(2px);transform:translateY(-2px)}}
+@keyframes languageFadeIn{from{opacity:0;filter:blur(2px);transform:translateY(3px)}to{opacity:1;filter:none;transform:none}}
 
 /* ==========================================================================
    Toast 通知 (右上角浮動)
@@ -642,6 +650,7 @@ body:not(.is-staff) .staff-only{display:none !important}
   .header-inner{flex-wrap:wrap;gap:8px;padding:12px 18px}
   .brand-title{font-size:17px}
   .topnav{width:100%;justify-content:flex-start;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .navlink{min-inline-size:88px}
   .topnav::-webkit-scrollbar{height:0}
   .navlink{padding:8px 12px;font-size:13.5px}
   .nav-user{margin-left:auto;padding-left:10px}

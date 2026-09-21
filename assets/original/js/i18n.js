@@ -328,11 +328,26 @@ function applyI18n() {
 }
 
 function setLang(lang) {
-  try { localStorage.setItem('lang', lang); } catch (e) {}
-  document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
-  applyI18n();
-  // 通知頁面重新渲染動態內容 (表格等)
-  document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+  const current = getLang();
+  const commitLanguage = () => {
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+    applyI18n();
+    // 通知頁面重新渲染動態內容 (表格等)
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+  };
+  if (current === lang) { commitLanguage(); return; }
+
+  // Chromium 原生 View Transition 會保留舊畫面到新語言完成排版，再柔和交接，
+  // 避免中英文長度不同造成使用者看到突兀的瞬間位移。
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (document.startViewTransition && !reduceMotion) {
+    document.documentElement.classList.add('language-transitioning');
+    const transition = document.startViewTransition(commitLanguage);
+    transition.finished.finally(() => document.documentElement.classList.remove('language-transitioning'));
+  } else {
+    commitLanguage();
+  }
 }
 
 function setTheme(theme) {
