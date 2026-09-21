@@ -29,6 +29,15 @@
     const init = Object.assign({}, options || {});
     const headers = new Headers(init.headers || {}); headers.delete("X-CSRFToken");
     const token = sessionStorage.getItem(tokenKey); if (token) headers.set("Authorization", "Bearer " + token);
+    if ((headers.get("Content-Type") || "").includes("application/json") && typeof init.body === "string") {
+      try {
+        const payload = JSON.parse(init.body);
+        if (payload && typeof payload === "object" && !Array.isArray(payload) && !payload.lang) {
+          payload.lang = typeof window.getLang === "function" ? window.getLang() : "en";
+          init.body = JSON.stringify(payload);
+        }
+      } catch (_) {}
+    }
     init.headers = headers; init.credentials = "omit"; init.mode = "cors"; init.cache = "no-store";
     const apiPath = url.pathname.replace(/^\/api\/(v1\/)?/, "/");
     const response = await nativeFetch(window.CITRUS_CONFIG.API_BASE + apiPath + url.search, init);
