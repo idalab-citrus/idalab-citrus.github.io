@@ -28,6 +28,7 @@ if(cameraBtn && cameraInput){
 }
 // 上一次分數 (後端隨分析結果回傳)，供卡片顯示「較上次 ▲/▼」
 let _prevScore = null;
+let _analysisBusy = false;
 function isImageFile(f){
   // HEIC 在部分瀏覽器 (Windows Chrome) 的 f.type 是空字串，改用副檔名補判
   return f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name || '');
@@ -53,72 +54,89 @@ document.addEventListener('paste', e=>{
 async function handleFiles(fileList){
   const files = Array.from(fileList).filter(isImageFile);
   if(!files.length){ showToast(t('progress.not_image'), 'error'); return; }
-
-  // 清空舊結果 (含上次還原的結果與提示)
-  cardsWrap.innerHTML = '';
-  summary.classList.remove('show');
-  document.querySelectorAll('.restored-note').forEach(el=>el.remove());
-
-  // 預覽佇列 (Google Lens 式掃描) + 骨架卡
-  buildPreviewStrip(files);
-  setPreviewStates(0);
-  buildSkeletons(Math.min(files.length, 2));
-
-  // 顯示進度
-  progress.classList.add('show');
-  setProgress(0, files.length, t('progress.uploading'));
-
-  const fd = new FormData();
-  files.forEach(f=>fd.append('images', f));
-
-  // 假進度動畫 (因為後端是一次回傳，給使用者視覺回饋)
-  let fake = 0;
-  const timer = setInterval(()=>{
-    fake = Math.min(fake + 1, files.length - 0.3);
-    setProgress(fake, files.length, t('progress.analyzing'));
-    setPreviewStates(fake);
-  }, Math.max(400, 1200 - files.length*40));
-
-  // 久候提示：超過 6 秒仍在跑 → 通常是伺服器首次載入模型，安撫使用者不是當機
-  const slowHint = setTimeout(()=>{
-    progress.querySelector('.t').textContent = t('progress.warming');
-  }, 6000);
-
-  // 逾時保護：避免連線異常時永遠卡在「掃描中」。時間隨張數放寬。
-  const ctrl = new AbortController();
-  const killer = setTimeout(()=>ctrl.abort(), 60000 + files.length * 20000);
-
-  const cleanupTimers = ()=>{ clearInterval(timer); clearTimeout(slowHint); clearTimeout(killer); };
-
+  if(_analysisBusy){ showToast(t('progress.busy'), 'info'); return; }
+  _analysisBusy = true;
   try{
-    const res = await apiFetch('/api/analyze', {method:'POST', body:fd, signal:ctrl.signal});
-    let data;
-    try{ data = await res.json(); }
-    catch(e){ throw new Error('HTTP ' + res.status); }
-    cleanupTimers();
+    // 清空舊結果 (含上次還原的結果與提示)
+    cardsWrap.innerHTML = '';
+    summary.classList.remove('show');
+    document.querySelectorAll('.restored-note').forEach(el=>el.remove());
+
+    // 每張獨立送出：單張完成時後端立即 commit，前端也立即顯示，不等整批。
+    buildPreviewStrip(files);
+    setPreviewStates(0);
+    progress.classList.add('show');
+    setProgress(0, files.length, t('progress.uploading'));
+
+    const batchResults = [];
+    let lastPrevScore = null;
+
+    for(let index=0; index<files.length; index++){
+      const file = files[index];
+      setPreviewStates(index);
+      setProgress(index, files.length, t('progress.analyzing'));
+      clearSkeletons();
+      buildSkeletons(1);
+
+      const fd = new FormData();
+      fd.append('images', file);
+      const ctrl = new AbortController();
+      const slowHint = setTimeout(()=>{
+        progress.querySelector('.t').textContent = t('progress.warming');
+      }, 6000);
+      const killer = setTimeout(()=>ctrl.abort(), 120000);
+
+      try{
+        const res = await apiFetch('/api/analyze', {method:'POST', body:fd, signal:ctrl.signal});
+        let data;
+        try{ data = await res.json(); }
+        catch(e){ throw new Error('HTTP ' + res.status); }
+        if(!data.ok) throw new Error(data.error || ('HTTP ' + res.status));
+
+        const itemResults = Array.isArray(data.results) && data.results.length
+          ? data.results
+          : [{ok:false, filename:file.name, error:t('progress.failed')}];
+        lastPrevScore = (data.prev_score != null) ? data.prev_score : lastPrevScore;
+        _prevScore = lastPrevScore;
+        itemResults.forEach(item=>{ item.previous_score = data.prev_score; });
+        batchResults.push(...itemResults);
+        clearSkeletons();
+        renderCards(itemResults);
+      }catch(err){
+        clearSkeletons();
+        if(err.message === 'AUTH_401') return;
+        const message = err.name === 'AbortError'
+          ? t('progress.timeout_single')
+          : t('progress.connection_error');
+        const failed = {ok:false, filename:file.name, error:message};
+        batchResults.push(failed);
+        renderCards([failed]);
+      }finally{
+        clearTimeout(slowHint);
+        clearTimeout(killer);
+      }
+
+      const aggregate = summarizeBatch(batchResults);
+      setProgress(index + 1, files.length, t('progress.analyzing'));
+      setPreviewStates(index + 1);
+      renderSummary(aggregate.summary, aggregate.count, batchResults);
+      saveLastBatch({
+        summary: aggregate.summary,
+        count: aggregate.count,
+        prev_score: lastPrevScore,
+        results: batchResults,
+      });
+    }
+
     setProgress(files.length, files.length, t('progress.done'));
     setPreviewStates(files.length);
-
     setTimeout(()=>{
       progress.classList.remove('show');
       hidePreviewStrip();
       clearSkeletons();
-      if(data.ok){
-        _prevScore = (data.prev_score != null) ? data.prev_score : null;
-        renderSummary(data.summary, data.count, data.results);
-        renderCards(data.results);
-        saveLastBatch(data);
-      }else{
-        showToast((t('progress.failed')||'分析失敗') + ': ' + (data.error||''), 'error');
-      }
-    }, 600);
-  }catch(err){
-    cleanupTimers();
-    progress.classList.remove('show');
-    hidePreviewStrip();
-    clearSkeletons();
-    if(err.name === 'AbortError') showToast(t('progress.timeout'), 'error');
-    else if(err.message !== 'AUTH_401') showToast('連線錯誤: ' + err.message, 'error');
+    }, 650);
+  }finally{
+    _analysisBusy = false;
   }
 }
 
@@ -185,6 +203,25 @@ function setProgress(cur, total, text){
   progress.querySelector('.t').textContent = text;
   progress.querySelector('.c').textContent = `${Math.floor(cur)} / ${total}`;
   progress.querySelector('.progress-bar i').style.width = (cur/total*100) + '%';
+}
+
+function summarizeBatch(results){
+  const valid = (results || []).filter(item=>item.ok);
+  const verified = valid.filter(item=>item.doctor_score != null);
+  const average = values=>values.length
+    ? Math.round(values.reduce((sum, value)=>sum + value, 0) / values.length * 10) / 10
+    : 0;
+  return {
+    count: valid.length,
+    summary: {
+      avg_ai: average(valid.map(item=>Number(item.ai_score) || 0)),
+      mae: verified.length
+        ? average(verified.map(item=>Math.abs(item.ai_score - item.doctor_score)))
+        : null,
+      hits: verified.filter(item=>item.ai_class === item.doctor_score).length,
+      verify_total: verified.length,
+    },
+  };
 }
 
 function analysisErrorMessage(result){
@@ -266,8 +303,9 @@ function renderCards(results){
         <div class="row"><span>${t('detail.doctor_score')}</span><span class="mono">${d.doctor_score}</span></div>
         <div class="row"><span>${t('detail.abs_error')}</span><span class="delta ${ok?'delta-ok':'delta-warn'}">${delta.toFixed(1)} ${t('detail.points')}</span></div>
       </div>`;
-    }else if(_prevScore != null){
-      const dv = d.ai_score - _prevScore;
+    }else if(d.previous_score != null || _prevScore != null){
+      const previousScore = d.previous_score != null ? d.previous_score : _prevScore;
+      const dv = d.ai_score - previousScore;
       const cls = dv > 0 ? 'delta-ok' : (dv < 0 ? 'delta-warn' : '');
       const sign = dv > 0 ? '▲ +' : (dv < 0 ? '▼ ' : '— ');
       compare = `<div class="score-compare">
