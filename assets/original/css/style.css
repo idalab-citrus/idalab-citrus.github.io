@@ -341,9 +341,9 @@ body:not(.is-staff) .staff-only{display:none !important}
 .auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg);overflow:hidden;overflow-wrap:anywhere}
 .auth-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright) 58%,#F59E0B)}
 .auth-brand{text-align:center;margin-bottom:24px}
-.auth-lab-logo{width:112px;height:112px;margin:0 auto 18px;background:linear-gradient(145deg,#F8FFFE,#E6FAF6);border:1px solid rgba(20,184,166,.25);border-radius:28px;padding:13px;box-shadow:0 16px 34px rgba(15,118,110,.17),inset 0 1px 0 #fff;overflow:hidden}
+.auth-lab-logo{width:124px;height:124px;margin:0 auto 18px;background:#fff;border:1px solid rgba(15,23,42,.12);border-radius:27px;padding:8px;box-shadow:0 16px 36px rgba(15,23,42,.18),inset 0 1px 0 rgba(255,255,255,.9);overflow:hidden}
 .auth-lab-logo img{display:block;width:100%;height:100%;object-fit:contain}
-[data-theme="dark"] .auth-lab-logo{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.62);box-shadow:0 18px 42px rgba(45,212,191,.18),0 0 0 1px rgba(94,234,212,.10),inset 0 1px 0 #fff}
+[data-theme="dark"] .auth-lab-logo{background:#fff;border-color:rgba(255,255,255,.72);box-shadow:0 18px 42px rgba(0,0,0,.32),0 0 0 1px rgba(94,234,212,.13),inset 0 1px 0 #fff}
 .auth-mark{width:92px;height:92px;margin:0 auto 14px;border-radius:27px;padding:11px;box-shadow:0 18px 36px rgba(15,118,110,.18),inset 0 1px 0 rgba(255,255,255,.9)}
 .auth-mark img{width:100%;height:100%}
 .auth-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:9px}
@@ -386,7 +386,9 @@ body:not(.is-staff) .staff-only{display:none !important}
 .data-table td.cell-ellipsis{max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .data-table td.cell-user{max-width:180px}
 .data-table td.cell-email{max-width:260px}
-.data-table td.cell-file{max-width:240px}
+.data-table td.cell-file{min-width:150px;max-width:240px}
+.data-table .cell-time{min-width:152px;white-space:nowrap}
+.data-table .cell-mode{min-width:138px;white-space:nowrap}
 .cell-text{display:inline-block;min-width:0;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
 .record-owner{white-space:nowrap}
 .data-table tbody tr:hover{background:var(--bg-soft)}
@@ -398,7 +400,7 @@ body:not(.is-staff) .staff-only{display:none !important}
 .empty-t{font-size:15px;font-weight:600;color:var(--ink)}
 .empty-d{font-size:13px;color:var(--ink-faint);max-width:340px;line-height:1.5}
 .data-table .dim{color:var(--ink-faint)}
-.tag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;line-height:1.35}
 .tag-verify{background:var(--teal-faint);color:var(--teal)}
 .tag-predict{background:var(--amber-faint);color:var(--amber)}
 .tag-admin{background:var(--amber-faint);color:var(--amber)}
@@ -771,6 +773,12 @@ main{animation:pageIn .45s ease both}
 .dropzone.drag .dz-icon{animation:dzPulse 1s ease-in-out infinite}
 @keyframes dzPulse{0%,100%{box-shadow:0 0 0 0 rgba(20,184,166,.35)}50%{box-shadow:0 0 0 14px rgba(20,184,166,0)}}
 .dz-paste-hint{font-size:12px;color:var(--ink-faint);margin-top:10px}
+.dz-choose-mobile{display:none}
+@media (hover:none) and (pointer:coarse){
+  .dz-choose-desktop{display:none}
+  .dz-choose-mobile{display:inline}
+  .dz-paste-hint{display:none}
+}
 
 /* ── 新手引導：三步驟玻璃卡 ── */
 .onboard{position:relative;min-height:214px;background:var(--glass-surface);border:1px solid var(--glass-edge);border-radius:18px;padding:20px 24px;margin-bottom:24px;box-shadow:var(--shadow-sm),inset 0 1px 0 var(--glass-edge);animation:rise .5s cubic-bezier(.2,.7,.3,1)}
