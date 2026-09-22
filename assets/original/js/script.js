@@ -102,6 +102,7 @@ async function handleFiles(fileList){
         batchResults.push(...itemResults);
         clearSkeletons();
         renderCards(itemResults);
+        setPreviewState(index, itemResults.some(item=>item.ok) ? 'done' : 'failed');
       }catch(err){
         clearSkeletons();
         if(err.message === 'AUTH_401') return;
@@ -111,6 +112,7 @@ async function handleFiles(fileList){
         const failed = {ok:false, filename:file.name, error:message};
         batchResults.push(failed);
         renderCards([failed]);
+        setPreviewState(index, 'failed');
       }finally{
         clearTimeout(slowHint);
         clearTimeout(killer);
@@ -118,7 +120,6 @@ async function handleFiles(fileList){
 
       const aggregate = summarizeBatch(batchResults);
       setProgress(index + 1, files.length, t('progress.analyzing'));
-      setPreviewStates(index + 1);
       renderSummary(aggregate.summary, aggregate.count, batchResults);
       saveLastBatch({
         summary: aggregate.summary,
@@ -129,7 +130,6 @@ async function handleFiles(fileList){
     }
 
     setProgress(files.length, files.length, t('progress.done'));
-    setPreviewStates(files.length);
     setTimeout(()=>{
       progress.classList.remove('show');
       hidePreviewStrip();
@@ -151,8 +151,9 @@ function buildPreviewStrip(files){
     return `<div class="pv-item" data-state="queued" style="animation-delay:${i*0.05}s">
       <div class="pv-thumb"><img src="${url}" alt=""><div class="pv-scan"></div>
         <div class="pv-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div class="pv-fail" aria-hidden="true">!</div>
       </div>
-      <div class="pv-meta"><div class="pv-name" title="${f.name}">${f.name}</div><div class="pv-state">${t('preview.queued')}</div></div>
+      <div class="pv-meta"><div class="pv-name" title="${esc(f.name)}">${esc(f.name)}</div><div class="pv-state">${t('preview.queued')}</div></div>
     </div>`;
   }).join('');
   strip.classList.remove('fade-out');
@@ -162,12 +163,16 @@ function setPreviewStates(p){
   const items = document.querySelectorAll('#previewStrip .pv-item');
   const cur = Math.floor(p);
   items.forEach((item, i)=>{
-    const st = (i < cur || p >= items.length) ? 'done' : (i === cur ? 'scanning' : 'queued');
-    if(item.dataset.state !== st){
-      item.dataset.state = st;
-      item.querySelector('.pv-state').textContent = t('preview.' + st);
-    }
+    if(item.dataset.state === 'done' || item.dataset.state === 'failed') return;
+    setPreviewState(i, i === cur ? 'scanning' : 'queued');
   });
+}
+function setPreviewState(index, state){
+  const item = document.querySelectorAll('#previewStrip .pv-item')[index];
+  if(!item || item.dataset.state === state) return;
+  item.dataset.state = state;
+  const label = item.querySelector('.pv-state');
+  if(label) label.textContent = t('preview.' + state);
 }
 function hidePreviewStrip(){
   const strip = document.getElementById('previewStrip');
@@ -210,7 +215,7 @@ function summarizeBatch(results){
   const verified = valid.filter(item=>item.doctor_score != null);
   const average = values=>values.length
     ? Math.round(values.reduce((sum, value)=>sum + value, 0) / values.length * 10) / 10
-    : 0;
+    : null;
   return {
     count: valid.length,
     summary: {

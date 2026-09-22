@@ -267,7 +267,7 @@ Object.assign(I18N.en, {
 // UI 升級字串 (掃描佇列 / 影像檢視器 / 貼上提示)
 Object.assign(I18N.zh, {
   'index.paste_hint': '提示：也可直接按 Ctrl + V 貼上剪貼簿中的影像',
-  'preview.queued': '佇列中', 'preview.scanning': 'AI 掃描中', 'preview.done': '完成',
+  'preview.queued': '佇列中', 'preview.scanning': 'AI 掃描中', 'preview.done': '完成', 'preview.failed': '分析失敗',
   'progress.done': '分析完成', 'progress.failed': '分析失敗',
   'progress.warming': '首次分析需載入 AI 模型，請稍候…',
   'progress.timeout': '分析逾時，請重試；張數較多時請分批上傳',
@@ -294,7 +294,7 @@ Object.assign(I18N.zh, {
 });
 Object.assign(I18N.en, {
   'index.paste_hint': 'Tip: you can also paste images from the clipboard (Ctrl + V)',
-  'preview.queued': 'Queued', 'preview.scanning': 'Scanning', 'preview.done': 'Done',
+  'preview.queued': 'Queued', 'preview.scanning': 'Scanning', 'preview.done': 'Done', 'preview.failed': 'Failed',
   'progress.done': 'Done', 'progress.failed': 'Analysis failed',
   'progress.warming': 'Loading the AI model for the first run, please wait…',
   'progress.timeout': 'Analysis timed out. Please retry, or upload in smaller batches.',
