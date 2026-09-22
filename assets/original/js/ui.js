@@ -156,6 +156,62 @@ function endButtonLoading(token) {
   _buttonLoadingStates.delete(token.button);
 }
 
+/* ── 全站確認對話框：取代瀏覽器原生 confirm，支援鍵盤、焦點回復與雙語 ── */
+let _globalConfirmResolver = null;
+let _globalConfirmPreviousFocus = null;
+
+function askGlobalConfirm(options) {
+  options = options || {};
+  const modal = document.getElementById('globalConfirmModal');
+  if (!modal) return Promise.resolve(window.confirm(options.message || 'Are you sure?'));
+  if (_globalConfirmResolver) finishGlobalConfirm(false);
+
+  document.getElementById('globalConfirmTitle').textContent = options.title || t('common.confirm');
+  document.getElementById('globalConfirmMessage').textContent = options.message || '';
+  document.getElementById('globalConfirmAccept').textContent = options.confirmText || t('common.confirm');
+  document.getElementById('globalConfirmCancel').textContent = options.cancelText || t('common.cancel');
+  _globalConfirmPreviousFocus = document.activeElement;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  requestAnimationFrame(() => document.getElementById('globalConfirmCancel').focus());
+  return new Promise(resolve => { _globalConfirmResolver = resolve; });
+}
+
+function finishGlobalConfirm(confirmed) {
+  const modal = document.getElementById('globalConfirmModal');
+  if (!modal || !modal.classList.contains('show')) return;
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+  const resolve = _globalConfirmResolver;
+  _globalConfirmResolver = null;
+  if (_globalConfirmPreviousFocus && document.contains(_globalConfirmPreviousFocus)) {
+    _globalConfirmPreviousFocus.focus({ preventScroll: true });
+  }
+  _globalConfirmPreviousFocus = null;
+  if (resolve) resolve(Boolean(confirmed));
+}
+
+document.addEventListener('keydown', event => {
+  const modal = document.getElementById('globalConfirmModal');
+  if (!modal || !modal.classList.contains('show')) return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    finishGlobalConfirm(false);
+    return;
+  }
+  if (event.key !== 'Tab') return;
+  const controls = [
+    document.getElementById('globalConfirmCancel'),
+    document.getElementById('globalConfirmAccept')
+  ].filter(Boolean);
+  if (!controls.length) return;
+  const first = controls[0], last = controls[controls.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
+
 /* ── 密碼欄位：全站一致的顯示／隱藏控制 ──
    按鈕可用鍵盤操作，aria-pressed 與標籤會跟目前狀態及介面語言同步。 */
 let _passwordFieldSeq = 0;
