@@ -11,7 +11,7 @@
   "lang": "zh-Hant",
   "icons": [
     {
-      "src": "/static/favicon.svg",
+      "src": "/assets/original/img/citrus-scan-mark-mono.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
