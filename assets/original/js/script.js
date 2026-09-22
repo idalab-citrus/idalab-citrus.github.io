@@ -187,6 +187,15 @@ function setProgress(cur, total, text){
   progress.querySelector('.progress-bar i').style.width = (cur/total*100) + '%';
 }
 
+function analysisErrorMessage(result){
+  if(result && result.error_code){
+    const key = 'analysis.' + result.error_code;
+    const translated = t(key);
+    if(translated !== key) return translated;
+  }
+  return (result && result.error) || t('progress.failed');
+}
+
 // ── 總覽 (數字 count-up 動畫) ──
 function renderSummary(s, count, results){
   const set = (id, val, dec)=>{
@@ -235,7 +244,7 @@ function renderCards(results){
         </div>
         <div class="err-body">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          <span>${d.error || '無法處理此影像'}</span>
+          <span>${esc(analysisErrorMessage(d))}</span>
         </div>`;
       cardsWrap.appendChild(card);
       return;
