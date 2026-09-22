@@ -97,6 +97,9 @@ header{
 .brand-mark::before{content:"";position:absolute;inset:-35%;z-index:-1;background:radial-gradient(circle at 24% 18%,rgba(45,212,191,.25),transparent 43%),radial-gradient(circle at 82% 78%,rgba(245,158,11,.16),transparent 38%)}
 .brand-mark img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(15,23,42,.16))}
 [data-theme="dark"] .brand-mark{background:linear-gradient(145deg,#F0FDFA,#DFF7F3);border-color:rgba(94,234,212,.60);box-shadow:0 8px 24px rgba(45,212,191,.16),0 0 0 1px rgba(94,234,212,.12),inset 0 1px 0 #fff}
+.brand-mark.project-mono-mark,.brand-mark.project-mono-mark:is([data-theme="dark"] *){padding:0;background:transparent;border-color:rgba(255,255,255,.12);box-shadow:0 8px 24px rgba(2,8,23,.28)}
+.brand-mark.project-mono-mark::before{display:none}
+.brand-mark.project-mono-mark img{filter:none;transform:scale(1.04)}
 .brand-title{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1.1;overflow:hidden;text-overflow:ellipsis}
 .brand-sub{font-size:10.5px;color:var(--teal);letter-spacing:.13em;text-transform:uppercase;margin-top:4px;font-weight:700}
 .header-meta{display:flex;gap:24px;align-items:center}
@@ -344,6 +347,7 @@ body:not(.is-staff) .staff-only{display:none !important}
 .auth-lab-logo{width:124px;height:124px;margin:0 auto 18px;background:#fff;border:1px solid rgba(15,23,42,.12);border-radius:27px;padding:8px;box-shadow:0 16px 36px rgba(15,23,42,.18),inset 0 1px 0 rgba(255,255,255,.9);overflow:hidden}
 .auth-lab-logo img{display:block;width:100%;height:100%;object-fit:contain}
 [data-theme="dark"] .auth-lab-logo{background:#fff;border-color:rgba(255,255,255,.72);box-shadow:0 18px 42px rgba(0,0,0,.32),0 0 0 1px rgba(94,234,212,.13),inset 0 1px 0 #fff}
+.auth-lab-logo.auth-project-mark,[data-theme="dark"] .auth-lab-logo.auth-project-mark{padding:0;background:transparent;border-color:rgba(255,255,255,.10);box-shadow:0 18px 42px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.04)}
 .auth-mark{width:92px;height:92px;margin:0 auto 14px;border-radius:27px;padding:11px;box-shadow:0 18px 36px rgba(15,118,110,.18),inset 0 1px 0 rgba(255,255,255,.9)}
 .auth-mark img{width:100%;height:100%}
 .auth-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;color:var(--teal);margin-bottom:9px}
@@ -882,6 +886,7 @@ main{animation:pageIn .45s ease both}
 [data-theme="dark"] .auth-loader-name{color:#C8FFF7}
 [data-theme="dark"] .auth-loader-track{background:rgba(255,255,255,.10)}
 [data-theme="dark"] .auth-loader-logo{background:#fff;border-color:rgba(94,234,212,.62);box-shadow:0 22px 60px rgba(0,0,0,.45),0 0 46px rgba(45,212,191,.22)}
+.auth-loader-logo.auth-project-mark,[data-theme="dark"] .auth-loader-logo.auth-project-mark{padding:0;background:transparent;border-color:rgba(255,255,255,.10);box-shadow:0 22px 60px rgba(0,0,0,.42),0 0 38px rgba(255,255,255,.08)}
 @keyframes loaderBrandIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes loaderAura{50%{transform:scale(1.08);opacity:.72}}
 @keyframes loaderTrack{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}

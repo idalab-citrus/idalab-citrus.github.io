@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">AI Scoring System</title>
+  <desc id="desc">A monochrome citrus cross-section joined with AI image-recognition circuitry.</desc>
+  <rect x="8" y="8" width="240" height="240" rx="58" fill="#050505"/>
+  <rect x="9" y="9" width="238" height="238" rx="57" fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="2"/>
+  <path d="M43 83V62c0-10 8-18 18-18h21M174 44h21c10 0 18 8 18 18v21M43 173v21c0 10 8 18 18 18h21M174 212h21c10 0 18-8 18-18v-21"
+        fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M119 61a67 67 0 0 0 0 134M115 76a52 52 0 0 0 0 104ZM115 128 75 96M115 128 66 128M115 128 75 160M136 58v140M136 79h29l18-18h19M136 111h52M136 145h30l20 20h18M136 179h39l16 16"
+        fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="115" cy="128" r="6" fill="#FFFFFF"/>
+  <circle cx="207" cy="61" r="9" fill="#FFFFFF"/>
+  <circle cx="198" cy="111" r="9" fill="#FFFFFF"/>
+  <circle cx="210" cy="165" r="9" fill="#FFFFFF"/>
+  <circle cx="197" cy="201" r="9" fill="#FFFFFF"/>
+</svg>
